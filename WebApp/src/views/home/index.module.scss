@@ -1,0 +1,70 @@
+$height: 715px;
+.root {
+    width: 1535px;
+    :global {
+        .sider {
+            height: $height;
+            .head-logo {
+                margin: 10px auto;
+                margin-left: 15px;
+                transition: 0.3s all ease;
+            }
+            .ant-menu-item-selected {
+                background-image: url(../../assets/menu-bg.png) !important;
+                background-size: cover;
+                background-color: transparent;
+                color: white !important;
+                border-radius: 0;
+            }
+        }
+
+        .right {
+            height: $height;
+            .header {
+                height: 40px;
+                margin: 0 10px 10px 10px;
+                background-color: white;
+                position: relative;
+                .ant-menu {
+                    height: 40px;
+                    line-height: 40px;
+                }
+                .delete {
+                    width: 15px;
+                    height: 15px;
+                    transition: 0.3s display ease;
+                    background-image: url(../../assets/close.png);
+                    background-size: cover;
+                    position: absolute;
+                    display: none;
+                    top: 0px;
+                    cursor: pointer;
+                    border-radius: 50%;
+                }
+                .delete:hover {
+                    background-image: url(../../assets//close2.png);
+                }
+            }
+            .content {
+                background-color: white;
+                margin: 0 10px 10px 10px;
+            }
+            .footer {
+                background-color: white;
+                margin: 0 10px;
+                text-align: center;
+                line-height: 20px;
+                color: #999999;
+                position: relative;
+                .logo {
+                    position: absolute;
+                    right: 10px;
+                    margin-top: 2px;
+                    width: 78px;
+                    height: 15px;
+                }
+            }
+        }
+
+    }
+}
