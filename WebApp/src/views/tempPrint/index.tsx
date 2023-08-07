@@ -1,7 +1,12 @@
 import React from 'react'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, List, MenuProps, Menu } from 'antd'
+import Preview from '@/components/preview';
 import styles from './index.module.scss'
+import { createPage } from '@/store/slices/tempPageSlice';
+import { createWidgets } from '@/store/slices/tempWidgetSlice';
+import {useDispatch} from 'react-redux'
+import { generateRandomTemplate } from '@/test/testData';
 
 const {Search} = Input;
 const menuItems: MenuProps['items'] = [
@@ -34,6 +39,13 @@ const data = [
 ];
 
 const TempPrint = () => {
+  const dispatch = useDispatch();
+  const t = generateRandomTemplate();
+  dispatch(createPage(t.page))
+  dispatch(createWidgets(t.widgets))
+
+  
+
   return (
     <div className={styles.root}>
       <div className='header'>
@@ -51,7 +63,7 @@ const TempPrint = () => {
               split={false}
               dataSource={data}
               renderItem={(item) => (
-                <List.Item>
+                <List.Item onClick={handleChoose}>
                   {item}
                 </List.Item>
               )}
@@ -60,7 +72,9 @@ const TempPrint = () => {
         </div>
         <div className='right'>
           <div className='temp-name'>模板名aaaaa</div>
-          <div className='view-port'></div>
+          <div className='view-port'>
+            <Preview/>
+          </div>
           <span className='buttoms'>
             <Button danger className='delete-buttom'>删除</Button>
             <Button type="primary" className='design-buttom'>设计</Button>
