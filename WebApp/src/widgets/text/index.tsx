@@ -3,7 +3,7 @@ import React from 'react'
 import styles from './index.module.scss'
 import {useSelector} from 'react-redux'
 
-const Text = ({index}: {index: number}) => {
+const Text = ({index, isDesign}: {index: number, isDesign: boolean}) => {
   const data: Widget = useSelector((s: any) => s.tempWidget.widgets[index])
   return (
     <div className={styles.root}

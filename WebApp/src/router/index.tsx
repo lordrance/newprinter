@@ -5,6 +5,7 @@ const HomePage = lazy(()=>import('@/views/homePage'))
 const TempPrint = lazy(()=>import('@/views/tempPrint'))
 const Test = lazy(()=>import('@/views/test'))
 const Test2 = lazy(()=>import('@/views/test2'))
+const Designer = lazy(() => import('@/views/tempPrint/designer'))
 
 const withFallback = (comp: JSX.Element) => (
     <React.Suspense fallback={<div>loading....</div>}>
@@ -38,6 +39,10 @@ const routes = [
                 element: withFallback(<Test2/>)
             }
         ]
+    },
+    {
+        path: '/home/tempPrint/designer',
+        element: withFallback(<Designer/>)
     }
 ]
 

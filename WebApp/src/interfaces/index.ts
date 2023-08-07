@@ -21,5 +21,11 @@ export interface Widget {
     left: number;
     top: number;
     value: any;
+    columns?: Column[];
     style: any;
+}
+
+export interface Column {
+    name: string;
+    value: string;
 }

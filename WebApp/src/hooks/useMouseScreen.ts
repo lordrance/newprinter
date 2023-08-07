@@ -1,6 +1,6 @@
 import {useRef, useEffect} from 'react'
 
-const useMousePreview = () => {
+const useMouseScreen = () => {
     let scale = 1;
     let moveX = 0;
     let moveY = 0;
@@ -16,6 +16,7 @@ const useMousePreview = () => {
             if (cur)
             cur.style.transform = `scale(${scale}) translate(${moveX}px,${moveY}px)`;
         } else {
+            if (scale > 0.2)
             scale -= 0.1
             if (cur)
             cur.style.transform = `scale(${scale}) translate(${moveX}px,${moveY}px)`;
@@ -55,4 +56,4 @@ const useMousePreview = () => {
     return ref;
 }
 
-export default useMousePreview;
+export default useMouseScreen;

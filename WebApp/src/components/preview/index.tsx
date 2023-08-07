@@ -1,29 +1,20 @@
 import {useSelector} from 'react-redux'
 import sytles from './index.module.scss'
-import useMousePreview from '@/hooks/useMousePreview'
-import Text from '@/widgets/text'
+import useMouseScreen from '@/hooks/useMouseScreen'
+import { selectWidget } from '@/utils'
 import { Widget } from '@/interfaces'
 
 const Preview = () => {
-    const ref = useMousePreview();
+    const ref = useMouseScreen();
     const widgets: Widget[] = useSelector((s: any) => s.tempWidget.widgets);
     const width = useSelector((s: any) => s.tempPage.width);
     const height = useSelector((s: any) => s.tempPage.height);
-
-    const select = (type: string, index: number) => {
-        switch (type) {
-            case 'text':
-                return <Text index={index} key={index}/>
-            default:
-                break;
-        }
-    }
 
     return (
         <div ref={ref} className={sytles.root} style={{width: width, height: height}}>
             {
                 widgets.map((x: any, index: number) => {
-                   return select(x.type, index)
+                   return selectWidget(x.type, index, false)
                 })
             }
         </div>

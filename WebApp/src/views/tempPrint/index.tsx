@@ -1,4 +1,4 @@
-import React from 'react'
+import {useState} from 'react'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, List, MenuProps, Menu } from 'antd'
 import Preview from '@/components/preview';
@@ -6,7 +6,9 @@ import styles from './index.module.scss'
 import { createPage } from '@/store/slices/tempPageSlice';
 import { createWidgets } from '@/store/slices/tempWidgetSlice';
 import {useDispatch} from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import { generateRandomTemplate } from '@/test/testData';
+import { Template } from '@/interfaces';
 
 const {Search} = Input;
 const menuItems: MenuProps['items'] = [
@@ -20,31 +22,24 @@ const menuItems: MenuProps['items'] = [
   },
 ]
 
-const data = [
-  'Racing car sprays .',
-  'Japanese princess.',
-  'Australian walksrash.',
-  'Man charged overgirl.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-  'Los Angeles battes.',
-];
-
+const data: Template[] = [];
+for (let i = 0; i < 20; i++) {
+  data[i] = generateRandomTemplate();
+}
 const TempPrint = () => {
+  const navigateTo = useNavigate();
+  const [tempName, setTempName] = useState('');
   const dispatch = useDispatch();
-  const t = generateRandomTemplate();
-  dispatch(createPage(t.page))
-  dispatch(createWidgets(t.widgets))
-
   
+  const handleChoose = (index: number) => {
+    dispatch(createPage(data[index].page));
+    dispatch(createWidgets(data[index].widgets));
+    setTempName(data[index].page.name)
+  }
+
+  const design = () => {
+    navigateTo('designer')
+  }
 
   return (
     <div className={styles.root}>
@@ -62,22 +57,22 @@ const TempPrint = () => {
             <List
               split={false}
               dataSource={data}
-              renderItem={(item) => (
-                <List.Item onClick={handleChoose}>
-                  {item}
+              renderItem={(item, index) => (
+                <List.Item onClick={() => handleChoose(index)}>
+                    {item.page.name}
                 </List.Item>
               )}
             />
           </div>
         </div>
         <div className='right'>
-          <div className='temp-name'>模板名aaaaa</div>
+          <div className='temp-name'>{tempName}</div>
           <div className='view-port'>
             <Preview/>
           </div>
           <span className='buttoms'>
             <Button danger className='delete-buttom'>删除</Button>
-            <Button type="primary" className='design-buttom'>设计</Button>
+            <Button type="primary" className='design-buttom' onClick={design}>设计</Button>
           </span>
         </div>
       </div>

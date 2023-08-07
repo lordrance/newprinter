@@ -4,6 +4,16 @@ function getRandomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function generateRandomString(length: number) {
+  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    result += charset[randomIndex];
+  }
+  return result;
+}
+
 function getRandomText(): string {
   const texts = ['Hello', 'World', 'TypeScript', 'Random', 'Text'];
   const randomIndex = getRandomNumber(0, texts.length - 1);
@@ -39,7 +49,7 @@ export function generateRandomTemplate(): Template {
   const pageHeight = getRandomNumber(200, 800);
 
   const page: Page = {
-    name: 'Random Page',
+    name: generateRandomString(10), 
     width: pageWidth,
     height: pageHeight,
     pageWidth,
