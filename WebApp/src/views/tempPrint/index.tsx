@@ -44,6 +44,8 @@ const TempPrint = () => {
   dispatch(createPage(t.page))
   dispatch(createWidgets(t.widgets))
 
+  
+
   return (
     <div className={styles.root}>
       <div className='header'>
@@ -61,7 +63,7 @@ const TempPrint = () => {
               split={false}
               dataSource={data}
               renderItem={(item) => (
-                <List.Item>
+                <List.Item onClick={handleChoose}>
                   {item}
                 </List.Item>
               )}

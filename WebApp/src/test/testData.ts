@@ -16,7 +16,7 @@ function generateRandomWidget(pageWidth: number, pageHeight: number): Widget {
   const left = getRandomNumber(0, pageWidth - widgetWidth);
   const top = getRandomNumber(0, pageHeight - widgetHeight);
 
-  const isTextWidget = Math.random() < 0.5;
+  const isTextWidget = Math.random() < 0.8;
   const widgetType = isTextWidget ? 'text' : 'other';
   const widgetValue = isTextWidget ? getRandomText() : null;
 

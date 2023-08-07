@@ -2,10 +2,11 @@ import {useSelector} from 'react-redux'
 import sytles from './index.module.scss'
 import useMousePreview from '@/hooks/useMousePreview'
 import Text from '@/widgets/text'
+import { Widget } from '@/interfaces'
 
 const Preview = () => {
     const ref = useMousePreview();
-    const widgets = useSelector((s: any) => s.tempWidget.widgets);
+    const widgets: Widget[] = useSelector((s: any) => s.tempWidget.widgets);
     const width = useSelector((s: any) => s.tempPage.width);
     const height = useSelector((s: any) => s.tempPage.height);
 
@@ -22,7 +23,7 @@ const Preview = () => {
         <div ref={ref} className={sytles.root} style={{width: width, height: height}}>
             {
                 widgets.map((x: any, index: number) => {
-                    select(x.type, index)
+                   return select(x.type, index)
                 })
             }
         </div>
