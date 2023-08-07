@@ -11,7 +11,6 @@ const useMousePreview = () => {
         e.preventDefault();
         e.stopPropagation();
         const cur = ref.current;
-        console.log(e)
         if (e.deltaY < 0) {
             scale += 0.1
             if (cur)

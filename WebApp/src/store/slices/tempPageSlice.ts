@@ -13,8 +13,12 @@ const tempPageSlice = createSlice({
     name: 'tempPage',
     initialState: initialState,
     reducers: {
-        createPage(state, {payload}) {
-            state = payload;
+        createPage(state, {payload}: {payload: Page}) {
+            state.height = payload.height;
+            state.width = payload.width;
+            state.name = payload.name;
+            state.pageHeight = payload.pageHeight;
+            state.pageWidth = payload.pageWidth;
         },
         changeTempWH(state, {payload}) {
             state.height = payload.height;

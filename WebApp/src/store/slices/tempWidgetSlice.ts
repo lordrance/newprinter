@@ -12,7 +12,8 @@ const tempWidgetSlice = createSlice({
     initialState: initialState,
     reducers: {
         createWidgets(state, {payload}: {payload: Widget[]}) {
-            state.widgets = payload
+            state.widgets = payload;
+            state.activeIndex = -1;
         },
         changeActive(state, {payload}) {
             state.activeIndex = payload;

@@ -3,6 +3,10 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, List, MenuProps, Menu } from 'antd'
 import Preview from '@/components/preview';
 import styles from './index.module.scss'
+import { createPage } from '@/store/slices/tempPageSlice';
+import { createWidgets } from '@/store/slices/tempWidgetSlice';
+import {useDispatch} from 'react-redux'
+import { generateRandomTemplate } from '@/test/testData';
 
 const {Search} = Input;
 const menuItems: MenuProps['items'] = [
@@ -35,6 +39,11 @@ const data = [
 ];
 
 const TempPrint = () => {
+  const dispatch = useDispatch();
+  const t = generateRandomTemplate();
+  dispatch(createPage(t.page))
+  dispatch(createWidgets(t.widgets))
+
   return (
     <div className={styles.root}>
       <div className='header'>
