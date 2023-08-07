@@ -1,6 +1,7 @@
 import React from 'react'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, List, MenuProps, Menu } from 'antd'
+import Preview from '@/components/preview';
 import styles from './index.module.scss'
 
 const {Search} = Input;
@@ -60,7 +61,9 @@ const TempPrint = () => {
         </div>
         <div className='right'>
           <div className='temp-name'>模板名aaaaa</div>
-          <div className='view-port'></div>
+          <div className='view-port'>
+            <Preview/>
+          </div>
           <span className='buttoms'>
             <Button danger className='delete-buttom'>删除</Button>
             <Button type="primary" className='design-buttom'>设计</Button>
