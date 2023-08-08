@@ -9,9 +9,8 @@
     display: flex;
     :global {
         .left {
-            width: 25vw;
             height: 100vh;
-            background-color: dimgray;
+            background-color: white;
         }
         .right {
             width: 75vw;

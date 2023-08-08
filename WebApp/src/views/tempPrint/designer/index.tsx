@@ -1,5 +1,6 @@
 import React from 'react'
 import Design from '@/components/design'
+import Panel from '@/components/panel'
 import styles from './index.module.scss'
 import { changeActive } from '@/store/slices/tempWidgetSlice'
 import { useDispatch } from 'react-redux';
@@ -11,9 +12,11 @@ const Designer = () => {
     }
   return (
     <div className={styles.root}>
-        <div className='left'></div>
+        <div className='left'>
+          <Panel/>
+        </div>
         <div className='right' onMouseDown={cancelActive}>
-            <Design/>
+          <Design/>
         </div>
     </div>
   )

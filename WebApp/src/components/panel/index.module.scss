@@ -1,0 +1,74 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    width: 26vw;
+    height: 100vh;
+    overflow: auto;
+    box-shadow: 0px 0px 10px rgb(94, 94, 94);
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+    :global {
+        .title {
+            margin: 10px 0 20px 10px;
+        }
+        .main {
+            margin: 5px;
+            margin-left: 15px;
+        }
+        hr {
+            border: 0.5px solid #c1c1c1;
+            width: 23vw;
+        }
+        label {
+            color: rgb(108, 108, 108);
+            font-size: 14px;
+            margin-right: 1vw ;
+        }
+        .page {
+            width: 24vw;
+            margin: 5px;
+            .main {
+                > div {
+                    margin-bottom: 20px;
+                }
+                .ant-input {
+                    width: 15vw;
+                    border-radius: 3px;
+                }
+                .ant-input-number {
+                    height: 30px;
+                    width: 5vw;
+                }
+            }
+        }
+        .style {
+            width: 23vw;
+            .main {
+                > div {
+                    margin-bottom: 20px;
+                    > span {
+                        margin-right: 30px;
+                    }
+                }
+                .ant-input-number {
+                    height: 30px;
+                    width: 5vw;
+                }
+            }
+        }
+        .widget {
+            width: 23vw;
+            .main {
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+        .buttom {
+            width: 23vw;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+    }
+}
