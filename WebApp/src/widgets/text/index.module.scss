@@ -1,5 +1,11 @@
 .root {
-    background-color: rgb(210, 210, 210);
-    border: 1px solid gray;
     position: absolute;
+    margin: 2px;
+    &:focus {
+        border: none;
+        outline: none;
+    }
+    &:hover {
+        outline:1px solid rgb(206, 206, 206);
+    }
 }

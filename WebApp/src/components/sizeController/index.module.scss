@@ -1,0 +1,10 @@
+$color: rgb(0, 157, 255);
+.root {
+    position: absolute;
+    border: 1px solid $color;
+    div {
+        position: absolute;
+        border: 1px solid $color;
+        background-color: white;
+    }
+}

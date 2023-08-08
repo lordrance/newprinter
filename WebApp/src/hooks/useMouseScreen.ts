@@ -1,9 +1,12 @@
 import {useRef, useEffect} from 'react'
+import { changeActive } from '@/store/slices/tempWidgetSlice'
+import { useDispatch } from 'react-redux';
 
 const useMouseScreen = () => {
     let scale = 1;
     let moveX = 0;
     let moveY = 0;
+    const dispatch = useDispatch();
 
     const ref = useRef<HTMLDivElement>(null);
 
@@ -25,6 +28,7 @@ const useMouseScreen = () => {
 
     const handleMouseDown = (e: MouseEvent) => {
         e.preventDefault();e.stopPropagation();
+        dispatch(changeActive(-1))
         document.addEventListener('mousemove', handleMove);
         document.addEventListener('mouseup', handleUp);
     }

@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
 import { Widget } from '@/interfaces'
-
+import {useSelector} from 'react-redux'
 
 const initialState = {
     activeIndex: -1,
@@ -23,8 +23,15 @@ const tempWidgetSlice = createSlice({
             state.widgets[state.activeIndex].height = payload.height;
         },
         changeWidgetPos(state, {payload}) {
-            state.widgets[state.activeIndex].left = payload.left;
-            state.widgets[state.activeIndex].top = payload.top;
+            const {width, height} = payload;
+            let mx = state.widgets[state.activeIndex].left + payload.moveX;
+            let my = state.widgets[state.activeIndex].top + payload.moveY;
+            mx = mx < 0 ? 0 : mx;
+            my = my < 0 ? 0 : my;
+            mx = mx + state.widgets[state.activeIndex].width > width ? width - state.widgets[state.activeIndex].width : mx;
+            my = my + state.widgets[state.activeIndex].height > height ? height - state.widgets[state.activeIndex].height : my;
+            state.widgets[state.activeIndex].left = mx;
+            state.widgets[state.activeIndex].top = my;
         }
     }
 
