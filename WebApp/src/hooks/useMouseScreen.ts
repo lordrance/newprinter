@@ -34,6 +34,7 @@ const useMouseScreen = () => {
     }
 
     const handleMove = (e: MouseEvent) => {
+        e.preventDefault();
         const cur = ref.current;
         moveX += e.movementX/scale;
         moveY += e.movementY/scale;
