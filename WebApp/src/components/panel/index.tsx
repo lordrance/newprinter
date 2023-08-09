@@ -1,10 +1,12 @@
-import { Button, Input, InputNumber, ColorPicker, Radio } from 'antd'
+import { Button, Input, InputNumber, ColorPicker, Radio, Switch, Select } from 'antd'
 import styles from './index.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
-import { Page, Widget } from '@/interfaces'
-import { changeWidgetWHO, changeWidgetPosO, addWidget, deleteWidget, changeActive} from '@/store/slices/tempWidgetSlice'
-import { changeTempName, changeTempPageWH, changeTempWH} from '@/store/slices/tempPageSlice'
+import { Page, Template, Widget } from '@/interfaces'
+import { changeWidgetWHO, changeWidgetPosO, addWidget, deleteWidget, changeActive, setStyle, createWidgets} from '@/store/slices/tempWidgetSlice'
+import { changeTempName, changeTempPageWH, changeTempWH, createPage} from '@/store/slices/tempPageSlice'
 import { useNavigate } from 'react-router-dom'
+import store from '@/store'
+
 const Panel = () => {
     const navigateTo = useNavigate();
     const dispatch = useDispatch();
@@ -46,6 +48,69 @@ const Panel = () => {
     const changeName = (e: any) => {
         dispatch(changeTempName(e.target.value))
     }
+    const changePaper = (e: any) => {
+        switch (e) {
+            case 'a4':
+                dispatch(changeTempPageWH({pageWidth: 210, pageHeight: 297}))
+                dispatch(changeTempWH({width: 210*3, height: 297*3}))
+                break;
+            case 'a5':
+                dispatch(changeTempPageWH({pageWidth: 148, pageHeight: 210}))
+                dispatch(changeTempWH({width: 148*3, height: 210*3}))
+                break;
+            case 'a6':
+                dispatch(changeTempPageWH({pageWidth: 105, pageHeight: 144}))
+                dispatch(changeTempWH({width: 105*3, height: 144*3}))
+                break;
+            default:
+                break;
+        }
+    }
+
+    //1水平2竖直
+    const changeDirection = (e: any) => {
+        if (e === 1) {
+            if (page.pageHeight > page.pageWidth) {
+                dispatch(changeTempPageWH({pageWidth: page.pageHeight, pageHeight: page.pageWidth}))
+                dispatch(changeTempWH({width: page.height, height: page.width}))
+            }
+        } else {
+            if (page.pageHeight < page.pageWidth) {
+                dispatch(changeTempPageWH({pageWidth: page.pageHeight, pageHeight: page.pageWidth}))
+                dispatch(changeTempWH({width: page.height, height: page.width}))
+            }
+        }
+    }
+
+    const bold = (e: any) => {
+        const style = {...widget.style, Bold: e}
+        dispatch(setStyle(style))
+    }
+
+    const italic = (e: any) => {
+        const style = {...widget.style, Italic: e}
+        dispatch(setStyle(style))
+    }
+
+    const underline = (e: any) => {
+        const style = {...widget.style, Underline: e}
+        dispatch(setStyle(style))
+    }
+
+    const align = (e: any) => {
+        const style = {...widget.style, Alignment: e.target.value}
+        dispatch(setStyle(style))
+    }
+
+    const fontSize = (e: any) => {
+        const style = {...widget.style, FontSize: e}
+        dispatch(setStyle(style))
+    }
+
+    const color = (e: any) => {
+        const style = {...widget.style, FontColor: '#'+e.toHex()}
+        dispatch(setStyle(style))
+    }
 
     const addText = () => {
         const text: Widget = {
@@ -56,7 +121,15 @@ const Panel = () => {
             height: 50,
             left: Math.ceil(page.width/2 - 50),
             top: Math.ceil(page.height/2 - 25),
-            value: '文本'
+            value: '文本',
+            style: {
+                Bold: false,
+                Italic: false,
+                FontSize: 12,
+                Alignment: 'left',
+                Underline: false,
+                FontColor: '#000000'
+            }
         }
         dispatch(addWidget(text))
     }
@@ -67,6 +140,34 @@ const Panel = () => {
     }
     
     const cancel = () => {
+        dispatch(createPage({
+            name: '',
+            width: 0,
+            height: 0,
+            pageHeight: 0,
+            pageWidth: 0,
+            uuid: 'null'
+        }))
+        dispatch(createWidgets([]))
+        navigateTo('/home/tempPrint')
+    }
+
+    const save = () => {
+        const temp: Template = {
+            page,
+            widgets: store.getState().tempWidget.widgets
+        }
+
+        let str = localStorage.getItem('temps');
+        const data: Template[] = str ? JSON.parse(str) : [];
+        const index = data.findIndex(x => x.page.uuid === temp.page.uuid)
+        if (index === -1) {
+            data.push(temp);
+        } else {
+            data[index] = temp
+        }
+        str = JSON.stringify(data)
+        localStorage.setItem('temps', str)
         navigateTo('/home/tempPrint')
     }
 
@@ -80,12 +181,14 @@ const Panel = () => {
                     <Input placeholder="请输入模板名称" value={page.name} onChange={changeName}/>
                 </div>
                 <div>
-                    <label>视口宽度</label>
-                    <InputNumber min={10} value={page.width} onChange={changeViewW} />
-                </div>
-                <div>
-                    <label>视口高度</label>
-                    <InputNumber min={10}  value={page.height} onChange={changeViewH}/>
+                    <span>
+                        <label>视口宽度</label>
+                        <InputNumber min={10} value={page.width} onChange={changeViewW} />
+                    </span>
+                    <span>
+                        <label>视口高度</label>
+                        <InputNumber min={10}  value={page.height} onChange={changeViewH}/>
+                    </span>
                 </div>
                 <div>
                     <label>纸张宽度(mm)</label>
@@ -94,6 +197,31 @@ const Panel = () => {
                 <div>
                     <label>纸张高度(mm)</label>
                     <InputNumber min={10}  value={page.pageHeight} onChange={changePageH}/>
+                </div>
+                <div>
+                    <span>
+                        <label>常用纸张</label>
+                        <Select
+                            style={{width: 70}}
+                            onSelect={changePaper}
+                            options={[
+                                { value: 'a4', label: 'A4' },
+                                { value: 'a5', label: 'A5' },
+                                { value: 'a6', label: 'A6' },
+                            ]}
+                        />                   
+                    </span>
+                    <span>
+                        <label>方向</label>
+                        <Select
+                            style={{width: 80}}
+                            onSelect={changeDirection}
+                            options={[
+                                {value: 1, label: '水平'},
+                                {value: 2, label: '竖直'}
+                            ]}
+                        />
+                    </span>
                 </div>
             </div>
         </div>
@@ -124,19 +252,39 @@ const Panel = () => {
                 <div>
                     <span>
                         <label>字号</label>
-                        <InputNumber min={12} />
+                        <InputNumber disabled={active===-1} min={12} 
+                        value={widget?.style?.FontSize ? widget?.style?.FontSize : 12}
+                        onChange={fontSize}/>
                     </span>
                     <span>
                         <label>颜色</label>
-                        <ColorPicker />
+                        <ColorPicker disabled={active===-1} onChange={color}
+                        value={widget?.style?.FontColor ? widget?.style?.FontColor : '000000'}/>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label>加粗</label>
+                        <Switch disabled={active===-1} onChange={bold}
+                        checked={widget?.style?.Bold ? true : false}/>
+                    </span>
+                    <span>
+                        <label>斜体</label>
+                        <Switch disabled={active===-1} onChange={italic}
+                        checked={widget?.style?.Italic ? true : false}/>
+                    </span>
+                    <span>
+                        <label>下划线</label>
+                        <Switch disabled={active===-1} onChange={underline} 
+                        checked={widget?.style?.Underline ? true : false}/>
                     </span>
                 </div>
                 <div>
                     <label>对齐方式</label>
-                    <Radio.Group value={3}>
-                        <Radio value={1}>左</Radio>
-                        <Radio value={2}>中</Radio>
-                        <Radio value={3}>右</Radio>
+                    <Radio.Group disabled={active===-1} onChange={align} value={widget?.style?.Alignment ? widget?.style?.Alignment : null }>
+                        <Radio value={'left'}>左</Radio>
+                        <Radio value={'center'}>中</Radio>
+                        <Radio value={'right'}>右</Radio>
                     </Radio.Group>
                 </div>
                 <div>
@@ -156,7 +304,7 @@ const Panel = () => {
         <hr/>
         <div className='buttom'>
             <Button className='b1' onClick={cancel}>取消</Button>
-            <Button className='b2' type="primary">保存</Button>
+            <Button className='b2' type="primary" onClick={save}>保存</Button>
         </div>
     </div>
   )

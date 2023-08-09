@@ -49,10 +49,16 @@ const tempWidgetSlice = createSlice({
         },
         deleteWidget(state) {
             state.widgets.splice(state.activeIndex, 1)
+        },
+        setStyle(state, {payload}) {
+            state.widgets[state.activeIndex].style = payload
+        },
+        changeValue(state, {payload}) {
+            state.widgets[payload.index].value = payload.value;
         }
     }
 
 })
 
-export const {changeActive,changeWidgetPos,changeWidgetWH,createWidgets, changeWidgetWHO, changeWidgetPosO, addWidget, deleteWidget} = tempWidgetSlice.actions;
+export const {changeActive,changeWidgetPos,changeWidgetWH,createWidgets, changeWidgetWHO, changeWidgetPosO, addWidget, deleteWidget, setStyle, changeValue} = tempWidgetSlice.actions;
 export default tempWidgetSlice.reducer;

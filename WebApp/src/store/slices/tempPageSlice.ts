@@ -6,7 +6,8 @@ const initialState: Page = {
     width: 0,
     height: 0,
     pageHeight: 0,
-    pageWidth: 0
+    pageWidth: 0,
+    uuid: 'null'
 }
 
 const tempPageSlice = createSlice({
@@ -19,6 +20,7 @@ const tempPageSlice = createSlice({
             state.name = payload.name;
             state.pageHeight = payload.pageHeight;
             state.pageWidth = payload.pageWidth;
+            state.uuid = payload.uuid
         },
         changeTempWH(state, {payload}) {
             state.height = payload.height;
@@ -30,9 +32,12 @@ const tempPageSlice = createSlice({
         },
         changeTempName(state, {payload}) {
             state.name = payload
+        },
+        setUUID(state, {payload}) {
+            state.uuid = payload
         }
     } 
 })
 
-export const {changeTempPageWH, changeTempWH, createPage, changeTempName} = tempPageSlice.actions;
+export const {changeTempPageWH, changeTempWH, createPage, changeTempName, setUUID} = tempPageSlice.actions;
 export default tempPageSlice.reducer;

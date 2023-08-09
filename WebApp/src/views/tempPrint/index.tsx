@@ -1,14 +1,13 @@
-import {useState} from 'react'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, List, MenuProps, Menu } from 'antd'
 import Preview from '@/components/preview';
 import styles from './index.module.scss'
 import { createPage } from '@/store/slices/tempPageSlice';
 import { createWidgets } from '@/store/slices/tempWidgetSlice';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import { generateRandomTemplate } from '@/test/testData';
-import { Template } from '@/interfaces';
+import { Template, Page } from '@/interfaces';
+import { v4 as uuid } from 'uuid';
 
 const {Search} = Input;
 const menuItems: MenuProps['items'] = [
@@ -22,22 +21,36 @@ const menuItems: MenuProps['items'] = [
   },
 ]
 
-const data: Template[] = [];
-for (let i = 0; i < 20; i++) {
-  data[i] = generateRandomTemplate();
-}
 const TempPrint = () => {
   const navigateTo = useNavigate();
-  const [tempName, setTempName] = useState('');
+  const tempPage = useSelector((s: any) => s.tempPage)
   const dispatch = useDispatch();
-  
+  const str = localStorage.getItem('temps');
+  const data: Template[] = str ? JSON.parse(str) : [];
   const handleChoose = (index: number) => {
     dispatch(createPage(data[index].page));
     dispatch(createWidgets(data[index].widgets));
-    setTempName(data[index].page.name)
   }
 
   const design = () => {
+    if (tempPage.uuid === 'null') {
+      alert('请选择模板')
+    } else {
+      navigateTo('designer')
+    }
+  }
+
+  const createTemp = () => {
+    const page: Page = {
+      name: 'example',
+      width: 500,
+      height: 600,
+      pageHeight: 600,
+      pageWidth: 500,
+      uuid: uuid()
+    }
+    dispatch(createPage(page));
+    dispatch(createWidgets([]))
     navigateTo('designer')
   }
 
@@ -51,7 +64,7 @@ const TempPrint = () => {
           <div className='title'>模板列表</div>
           <span className='buttoms'>
             <Search placeholder="input search text"  className='search' />
-            <Button type="primary" icon={<PlusOutlined />} className='create'>新建</Button>
+            <Button type="primary" icon={<PlusOutlined />} className='create' onClick={createTemp}>新建</Button>
           </span>
           <div className='list'>
             <List
@@ -66,7 +79,7 @@ const TempPrint = () => {
           </div>
         </div>
         <div className='right'>
-          <div className='temp-name'>{tempName}</div>
+          <div className='temp-name'>{tempPage.name}</div>
           <div className='view-port'>
             <Preview/>
           </div>

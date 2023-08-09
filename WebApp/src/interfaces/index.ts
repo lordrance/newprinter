@@ -9,11 +9,11 @@ export interface Page {
     height: number;
     pageWidth: number;
     pageHeight: number;
+    uuid: string;
 }
 
 export interface Widget {
     type: string;
-    index?: number;
     isEdit: boolean;
     resizable: boolean;
     width: number;
@@ -23,6 +23,15 @@ export interface Widget {
     value: any;
     columns?: Column[];
     style?: any;
+}
+
+export interface Style {
+    FontSize: number;
+    Bold: boolean;
+    Italic: boolean;
+    Underline: boolean;
+    Alignment: string;
+    FontColor: string;
 }
 
 export interface Column {

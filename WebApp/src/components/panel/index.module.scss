@@ -31,6 +31,9 @@
             .main {
                 > div {
                     margin-bottom: 20px;
+                    > span {
+                        margin-right: 20px;
+                    }
                 }
                 .ant-input {
                     width: 15vw;
@@ -48,7 +51,7 @@
                 > div {
                     margin-bottom: 20px;
                     > span {
-                        margin-right: 30px;
+                        margin-right: 10px;
                     }
                 }
                 .ant-input-number {

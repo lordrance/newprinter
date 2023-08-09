@@ -103,7 +103,6 @@ const Home: React.FC = () => {
 
   const handleTopEnter = (e: any) => {
     deleteLabel = e.target.outerText;
-    console.log(deleteLabel)
     let c = deleteRef.current;
     let offset = e.target.offsetLeft+e.target.offsetWidth
     offset -= e.target.offsetWidth*0.15
