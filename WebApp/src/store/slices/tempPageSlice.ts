@@ -27,9 +27,12 @@ const tempPageSlice = createSlice({
         changeTempPageWH(state, {payload}) {
             state.pageHeight = payload.pageHeight;
             state.pageWidth = payload.pageWidth;
+        },
+        changeTempName(state, {payload}) {
+            state.name = payload
         }
     } 
 })
 
-export const {changeTempPageWH, changeTempWH, createPage} = tempPageSlice.actions;
+export const {changeTempPageWH, changeTempWH, createPage, changeTempName} = tempPageSlice.actions;
 export default tempPageSlice.reducer;

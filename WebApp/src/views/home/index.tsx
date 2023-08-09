@@ -8,15 +8,11 @@ import styles from './index.module.scss'
 import logo from '@/assets/logo.png'
 import headLogo from '@/assets/head-logo.png'
 import { Outlet, useNavigate } from 'react-router-dom';
+import { MenuItem } from '@/interfaces';
+import {useSelector, useDispatch} from 'react-redux'
+import { addNav, deleteNav } from '@/store/slices/topNavSlice';
 
 const { Content, Sider } = Layout;
-
-type MenuItem = {
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-}
 
 function getItem(
   label: React.ReactNode,
@@ -41,6 +37,8 @@ const items: MenuItem[] = [
 const Home: React.FC = () => {
 
   const navigateTo = useNavigate();
+  const dispatch = useDispatch();
+  const topItems: MenuItem[] = useSelector((s: any) => s.topNav)
 
   //收放侧边栏
   const [collapsed, setCollapsed] = useState(false);
@@ -57,7 +55,6 @@ const Home: React.FC = () => {
   }
 
   //点击导航
-  const [topItems, setTopItems] = useState([] as MenuItem[])
   const [selectKeys, setSelectKeys] = useState([] as string[])
   const handleClick = ({key}: {key: string}) => {
     navigateTo(key)
@@ -68,8 +65,7 @@ const Home: React.FC = () => {
           key: key,
           label: label
         } as MenuItem;
-        const newState = [...topItems, item];
-        setTopItems(newState)
+        dispatch(addNav(item))
     }
   }
 
@@ -95,18 +91,19 @@ const Home: React.FC = () => {
 
   let deleteLabel = ''
   const handleDelete = () => {
-    const newTopItems = topItems.filter(x=>x.label!==deleteLabel)
-    setTopItems(newTopItems)
-    if (newTopItems.length !== 0 && (deleteLabel === items.find(x=>x.key === selectKeys[0])?.label)) {
-      setSelectKeys([newTopItems[0].key.toString()])
-      navigateTo(newTopItems[0].key.toString())
+    const index = topItems.findIndex(x=>x.label === deleteLabel)
+    console.log(index, deleteLabel)
+    if (index !== -1 && topItems[index].key === selectKeys[0]) {
+      navigateTo('')
+      setSelectKeys([])
     }
-    if (newTopItems.length === 0) setSelectKeys([])
+    dispatch(deleteNav(index))
     removeDelete()
   }
 
   const handleTopEnter = (e: any) => {
     deleteLabel = e.target.outerText;
+    console.log(deleteLabel)
     let c = deleteRef.current;
     let offset = e.target.offsetLeft+e.target.offsetWidth
     offset -= e.target.offsetWidth*0.15

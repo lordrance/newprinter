@@ -1,11 +1,10 @@
 import {useEffect, useRef} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import { changeWidgetPos, changeActive } from '@/store/slices/tempWidgetSlice';
+import store from '@/store';
 const useMouseWidget = (index: number) => {
     const ref = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
-    const width = useSelector((s: any) => s.tempPage.width)
-    const height = useSelector((s: any) => s.tempPage.height)
 
     const handleDown = (e: MouseEvent) => {
         e.stopPropagation(); 
@@ -16,6 +15,8 @@ const useMouseWidget = (index: number) => {
 
     const handleMove = (e: MouseEvent) => {
         e.stopPropagation(); e.preventDefault();
+        const width = store.getState().tempPage.width;
+        const height = store.getState().tempPage.height;
         let trans = ref.current?.parentElement?.style.transform;
         const s = trans?.match(/scale\((.*?)\)/)
         const scale = s ? parseFloat(s[1]) : 1

@@ -13,7 +13,7 @@ export interface Page {
 
 export interface Widget {
     type: string;
-    index: number;
+    index?: number;
     isEdit: boolean;
     resizable: boolean;
     width: number;
@@ -22,10 +22,17 @@ export interface Widget {
     top: number;
     value: any;
     columns?: Column[];
-    style: any;
+    style?: any;
 }
 
 export interface Column {
     name: string;
     value: string;
+}
+
+export interface MenuItem  {
+  label: React.ReactNode;
+  key: React.Key;
+  icon?: React.ReactNode;
+  children?: MenuItem[];
 }
