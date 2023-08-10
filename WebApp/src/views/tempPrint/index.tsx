@@ -43,10 +43,10 @@ const TempPrint = () => {
   const createTemp = () => {
     const page: Page = {
       name: 'example',
-      width: 500,
-      height: 600,
-      pageHeight: 600,
-      pageWidth: 500,
+      width: 210*3.8,
+      height: 297*3.8,
+      pageHeight: 297,
+      pageWidth: 210,
       uuid: uuid()
     }
     dispatch(createPage(page));

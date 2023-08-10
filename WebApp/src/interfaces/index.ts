@@ -22,7 +22,7 @@ export interface Widget {
     top: number;
     value: any;
     columns?: Column[];
-    style?: any;
+    style: any;
 }
 
 export interface Style {

@@ -15,11 +15,12 @@ const useMouseScreen = () => {
         e.stopPropagation();
         const cur = ref.current;
         if (e.deltaY < 0) {
+            if (scale < 2.5)
             scale += 0.1
             if (cur)
             cur.style.transform = `scale(${scale}) translate(${moveX}px,${moveY}px)`;
         } else {
-            if (scale > 0.2)
+            if (scale > 0.3)
             scale -= 0.1
             if (cur)
             cur.style.transform = `scale(${scale}) translate(${moveX}px,${moveY}px)`;
@@ -36,8 +37,19 @@ const useMouseScreen = () => {
     const handleMove = (e: MouseEvent) => {
         e.preventDefault();
         const cur = ref.current;
-        moveX += e.movementX/scale;
-        moveY += e.movementY/scale;
+        const mx = e.movementX/scale
+        const my = e.movementY/scale
+        const limitX = window.innerWidth*0.45/scale
+        const limitY = window.innerHeight*0.65/scale
+
+        if (moveX >= - limitX && moveX <= limitX) moveX += mx
+        else if (moveX < - limitX && mx > 0) moveX += mx
+        else if (moveX > limitX && mx < 0) moveX += mx
+
+        if (moveY >= -limitY && moveY <= limitY) moveY += my;
+        else if (moveY < - limitY && my > 0) moveY += my
+        else if (moveY > limitY && my < 0) moveY += my
+
         if (cur) {
             cur.style.transform = `scale(${scale}) translate(${moveX}px, ${moveY}px)`;
         }

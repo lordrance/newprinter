@@ -19,12 +19,13 @@ const Text = ({index, isDesign}: {index: number, isDesign: boolean}) => {
         height: data.height+'px',
         left: data.left+'px',
         top: data.top+'px',
-        fontSize: data?.style?.FontSize,
+        fontSize: data?.style?.FontSize+'pt',
         fontWeight: data?.style?.Bold ? 'bold' : 'normal',
         fontStyle: data?.style?.Italic ? 'italic' : 'normal',
         textDecoration: data?.style?.Underline ? 'underline' : 'none',
         textAlign: data?.style?.Alignment === 'right' ? 'right' : data?.style?.Alignment === 'center' ? 'center' : 'left',
-        color: data?.style?.FontColor
+        color: data?.style?.FontColor,
+        fontFamily: data?.style?.FontName
       }}
       suppressContentEditableWarning={true}
       contentEditable={true}
