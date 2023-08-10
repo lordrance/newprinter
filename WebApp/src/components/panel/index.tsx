@@ -1,8 +1,8 @@
 import { Button, Input, InputNumber, ColorPicker, Radio, Switch, Select } from 'antd'
 import styles from './index.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
-import { Page, Template, Widget } from '@/interfaces'
-import { changeWidgetWHO, changeWidgetPosO, addWidget, deleteWidget, changeActive, setStyle, createWidgets} from '@/store/slices/tempWidgetSlice'
+import { Page, Template} from '@/interfaces'
+import { changeWidgetWHO, changeWidgetPosO, addWidget, deleteWidget, changeActive, setStyle, createWidgets, deleteCurCol, addCol} from '@/store/slices/tempWidgetSlice'
 import { changeTempName, changeTempPageWH, changeTempWH, createPage} from '@/store/slices/tempPageSlice'
 import { useNavigate } from 'react-router-dom'
 import store from '@/store'
@@ -13,7 +13,13 @@ const Panel = () => {
     const navigateTo = useNavigate();
     const dispatch = useDispatch();
     const page: Page = useSelector((s: any) => s.tempPage)
-    const widget: Widget = useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex])
+    const width= useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex]?.width)
+    const height = useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex]?.height)
+    const left = useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex]?.left)
+    const top = useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex]?.top)
+    const style = useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex]?.style)
+    const type = useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex]?.type)
+    const activeCol = useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex]?.activeCol)
     const active = useSelector((s: any) => s.tempWidget.activeIndex)
 
     const changePaper = (s: string) => {
@@ -145,28 +151,28 @@ const Panel = () => {
                 <div>
                     <span>
                         <label>宽度</label>
-                        <InputNumber min={10} disabled={active===-1} value={active===-1?null:widget.width.toFixed(1)} onChange={
-                            (e: any) => dispatch(changeWidgetWHO({width: e, height: widget.height}))
+                        <InputNumber min={10} disabled={active===-1} value={active===-1?null:width.toFixed(1)} onChange={
+                            (e: any) => dispatch(changeWidgetWHO({width: e, height: height}))
                         }/>
                     </span>
                     <span>
                         <label>高度</label>
-                        <InputNumber min={10} disabled={active===-1} value={active===-1?null:widget.height.toFixed(1)} onChange={
-                            (e: any) => dispatch(changeWidgetWHO({width: widget.width, height: e}))
+                        <InputNumber min={10} disabled={active===-1} value={active===-1?null:height.toFixed(1)} onChange={
+                            (e: any) => dispatch(changeWidgetWHO({width: width, height: e}))
                             }/>
                     </span>
                 </div>
                 <div>
                     <span>
                         <label>横坐标</label>
-                        <InputNumber disabled={active===-1} value={active===-1?null:widget.left.toFixed(1)} onChange={
-                            (e) => dispatch(changeWidgetPosO({left: e, top: widget.top}))
+                        <InputNumber disabled={active===-1} value={active===-1?null:left.toFixed(1)} onChange={
+                            (e) => dispatch(changeWidgetPosO({left: e, top: top}))
                         }/>
                     </span>
                     <span>
                         <label>纵坐标</label>
-                        <InputNumber disabled={active===-1} value={active===-1?null:widget.top.toFixed(1)} onChange={
-                            (e: any) => dispatch(changeWidgetPosO({left: widget.left, top: e}))
+                        <InputNumber disabled={active===-1} value={active===-1?null:top.toFixed(1)} onChange={
+                            (e: any) => dispatch(changeWidgetPosO({left: left, top: e}))
                         }/>
                     </span>
                 </div>
@@ -174,17 +180,17 @@ const Panel = () => {
                     <span>
                         <label>字号</label>
                         <InputNumber disabled={active===-1} min={12} 
-                        value={widget?.style?.FontSize ? widget?.style?.FontSize : 12}
+                        value={style?.FontSize ? style?.FontSize : 12}
                         onChange={
-                            (e: any) => dispatch(setStyle({...widget.style, FontSize: e}))
+                            (e: any) => dispatch(setStyle({...style, FontSize: e}))
                         }/>
                     </span>
                     <span>
                         <label>颜色</label>
                         <ColorPicker disabled={active===-1} onChange={
-                            (e: any) => dispatch(setStyle({...widget.style, FontColor: '#'+e.toHex()}))
+                            (e: any) => dispatch(setStyle({...style, FontColor: '#'+e.toHex()}))
                         }
-                        value={widget?.style?.FontColor ? widget?.style?.FontColor : '000000'}/>
+                        value={style?.FontColor ? style?.FontColor : '000000'}/>
                     </span>
                 </div>
                 <div>
@@ -192,10 +198,10 @@ const Panel = () => {
                     <Select
                         style={{width: 180}}
                         disabled={active===-1}
-                        value={widget?.style?.FontName ? widget?.style?.FontName : null}
+                        value={style?.FontName ? style?.FontName : null}
                         onSelect={
                             (e: any) => {
-                                dispatch(setStyle({...widget.style, FontName: e}))
+                                dispatch(setStyle({...style, FontName: e}))
                             }
                         }
                         options={getFonts()}
@@ -205,39 +211,44 @@ const Panel = () => {
                     <span>
                         <label>加粗</label>
                         <Switch disabled={active===-1} onChange={
-                            (e: any) => dispatch(setStyle({...widget.style, Bold: e}))
+                            (e: any) => dispatch(setStyle({...style, Bold: e}))
                         }
-                        checked={widget?.style?.Bold ? true : false}/>
+                        checked={style?.Bold ? true : false}/>
                     </span>
                     <span>
                         <label>斜体</label>
                         <Switch disabled={active===-1} onChange={
-                            (e: any) => dispatch(setStyle({...widget.style, Italic: e}))
+                            (e: any) => dispatch(setStyle({...style, Italic: e}))
                         }
-                        checked={widget?.style?.Italic ? true : false}/>
+                        checked={style?.Italic ? true : false}/>
                     </span>
                     <span>
                         <label>下划线</label>
                         <Switch disabled={active===-1} onChange={
-                            (e: any) => dispatch(setStyle({...widget.style, Underline: e}))
+                            (e: any) => dispatch(setStyle({...style, Underline: e}))
                         } 
-                        checked={widget?.style?.Underline ? true : false}/>
+                        checked={style?.Underline ? true : false}/>
                     </span>
                 </div>
                 <div>
                     <label>对齐方式</label>
                     <Radio.Group disabled={active===-1} onChange={
-                        (e: any) => dispatch(setStyle({...widget.style, Alignment: e.target.value}))
+                        (e: any) => dispatch(setStyle({...style, Alignment: e.target.value}))
                     } 
-                    value={widget?.style?.Alignment ? widget?.style?.Alignment : null }>
+                    value={style?.Alignment ? style?.Alignment : null }>
                         <Radio value={'left'}>左</Radio>
                         <Radio value={'center'}>中</Radio>
                         <Radio value={'right'}>右</Radio>
                     </Radio.Group>
                 </div>
                 <div>
-                    <Button disabled={active === -1 || widget?.type !== 'table'}>新增一列</Button>
-                    <Button disabled={active === -1 || widget?.type !== 'table'}>删除当前列</Button>
+                    <label>表格</label>
+                    <Button disabled={active === -1 || type !== 'table'}
+                        onClick={() => {dispatch(addCol())}}
+                    >新增一列</Button>
+                    <Button disabled={active === -1 || type !== 'table' || activeCol === -1} 
+                        onClick={() => dispatch(deleteCurCol())}
+                    >删除当前列</Button>
                 </div>
                 <div>
                     <Button danger disabled={active===-1} onClick={deleteCur}>删除组件</Button>

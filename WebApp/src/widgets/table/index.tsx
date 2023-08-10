@@ -1,11 +1,29 @@
 import { Widget, Column } from '@/interfaces'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import styles from './index.module.scss'
 import useMouseWidget from '@/hooks/useMouseWidget'
+import { changeCol, setActiveCol } from '@/store/slices/tempWidgetSlice'
 
 const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
+  const dispatch = useDispatch();
   const data: Widget = useSelector((s: any) => s.tempWidget.widgets[index])
   const ref = useMouseWidget(index)
+  const handleClick = (e: any) => {
+    dispatch(setActiveCol(e.target.cellIndex))
+  }
+  const updateColValue = (e: any) => {
+    const s: string[] = e.target.innerText.split('\n');
+    const s1: string[] = s[0].split('\t')
+    const s2: string[] = s[1].split('\t')
+    const v: Column[] = []
+    for (let i = 0; i < s1.length; i++) {
+      v[i] = {
+        name: s1[i],
+        value: s2[i]
+      }
+    }
+    dispatch(changeCol({index, value: v}))
+  }
 
   return (
     <div className={styles.root} ref={isDesign?ref:null}
@@ -23,20 +41,31 @@ const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
         fontFamily: data?.style?.FontName
       }}
     >
-      <tr>
-        {
-          data.columns?.map((x: Column, index: number) => (
-            <th key={index}>{x.name}</th>
-          ))
-        }
-      </tr>
-      <tr>
-        {
-          data.columns?.map((x: Column, index: number) => (
-            <td key={index}>{x.value}</td>
-          ))
-        }
-      </tr>
+      <table 
+        contentEditable={true}
+        suppressContentEditableWarning={true}
+        onClick={handleClick}
+        onBlur={updateColValue}
+      >
+        <thead>
+          <tr >
+            {
+              data.columns?.map((x: Column, index: number) => (
+                <th key={index} style={{backgroundColor: index === data.activeCol ? '#D2F3EE' : undefined}}>{x.name}</th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {
+              data.columns?.map((x: Column, index: number) => (
+                <td key={index} style={{backgroundColor: index === data.activeCol ? '#D2F3EE' : undefined}}>{x.value}</td>
+              ))
+            }
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }

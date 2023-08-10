@@ -16,6 +16,13 @@ const tempWidgetSlice = createSlice({
         },
         changeActive(state, {payload}) {
             state.activeIndex = payload;
+            if (payload === -1) {
+                state.widgets.forEach(x=>{
+                    if ('activeCol' in x) {
+                        x.activeCol = -1
+                    }
+                })
+            }
         },
         changeWidgetWHO(state, {payload}) {
             state.widgets[state.activeIndex].width = payload.width;
@@ -55,10 +62,31 @@ const tempWidgetSlice = createSlice({
         },
         changeValue(state, {payload}) {
             state.widgets[payload.index].value = payload.value;
+        },
+        setActiveCol(state, {payload}) {
+            state.widgets[state.activeIndex].activeCol = payload
+        },
+        deleteCurCol(state) {
+            const w = state.widgets[state.activeIndex];
+            if (w) {
+                w.columns?.splice(w.activeCol, 1);
+            }
+        },
+        addCol(state) {
+            const w = state.widgets[state.activeIndex];
+            if (w.activeCol === -1)
+            w.columns?.push({name: '',value: ''})
+            else
+            w.columns?.splice(w.activeCol + 1, 0, {name: '',value: ''})
+        },
+        changeCol(state, {payload}) {
+            state.widgets[payload.index].columns = payload.value
         }
     }
 
 })
 
-export const {changeActive,changeWidgetPos,changeWidgetWH,createWidgets, changeWidgetWHO, changeWidgetPosO, addWidget, deleteWidget, setStyle, changeValue} = tempWidgetSlice.actions;
+export const {changeActive,changeWidgetPos,changeWidgetWH,createWidgets, changeWidgetWHO,
+     changeWidgetPosO, addWidget, deleteWidget, setStyle, changeValue, setActiveCol, deleteCurCol,
+      addCol, changeCol} = tempWidgetSlice.actions;
 export default tempWidgetSlice.reducer;

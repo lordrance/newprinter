@@ -21,6 +21,7 @@ export interface Widget {
     left: number;
     top: number;
     value: any;
+    activeCol: number;
     columns?: Column[];
     style: any;
 }

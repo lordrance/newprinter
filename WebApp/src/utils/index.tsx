@@ -138,6 +138,7 @@ export const getDefaultText = () => {
         left: 0,
         top: 0,
         value: '文本',
+        activeCol: -1,
         style: {
             Bold: false,
             Italic: false,
@@ -160,6 +161,7 @@ export const getDefaultTable = () => {
         left: 0,
         top: 0,
         value: [],
+        activeCol: -1,
         columns: [
             {
                 name: 'title1',

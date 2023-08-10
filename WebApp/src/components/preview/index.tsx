@@ -9,7 +9,6 @@ const Preview = () => {
     const widgets: Widget[] = useSelector((s: any) => s.tempWidget.widgets);
     const width = useSelector((s: any) => s.tempPage.width);
     const height = useSelector((s: any) => s.tempPage.height);
-
     return (
         <div ref={ref} className={sytles.root} style={{width: width, height: height}}>
             {
