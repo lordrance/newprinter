@@ -1,6 +1,6 @@
 import Text from "@/widgets/text";
 import Table from "@/widgets/table";
-import { Widget } from "@/interfaces";
+import { Column, Widget } from "@/interfaces";
 
 export const selectWidget = (type: string, index: number, isDesign: boolean) => {
     switch (type) {
@@ -182,4 +182,8 @@ export const getDefaultTable = () => {
             FontName: 'Microsoft Yahei'
         }
     } as Widget
+}
+
+export const tableToHtml = (style: any, cols?: Column[], value?:any) => {
+
 }

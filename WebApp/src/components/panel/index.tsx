@@ -186,8 +186,8 @@ const Panel = () => {
                         }/>
                     </span>
                     <span>
-                        <label>颜色</label>
-                        <ColorPicker disabled={active===-1} onChange={
+                        <label>字体颜色</label>
+                        <ColorPicker disabled={active===-1} onChangeComplete={
                             (e: any) => dispatch(setStyle({...style, FontColor: '#'+e.toHex()}))
                         }
                         value={style?.FontColor ? style?.FontColor : '000000'}/>
@@ -242,13 +242,31 @@ const Panel = () => {
                     </Radio.Group>
                 </div>
                 <div>
-                    <label>表格</label>
+                    <label>表格列</label>
                     <Button disabled={active === -1 || type !== 'table'}
                         onClick={() => {dispatch(addCol())}}
                     >新增一列</Button>
                     <Button disabled={active === -1 || type !== 'table' || activeCol === -1} 
                         onClick={() => dispatch(deleteCurCol())}
                     >删除当前列</Button>
+                </div>
+                <div>
+                    <span>
+                        <label>边框粗细</label>
+                        <InputNumber min={1} disabled={active === -1 || type !== 'table'}
+                            value={style?.BorderWidth ? style?.BorderWidth : null}
+                            onChange={
+                            (e: any) => dispatch(setStyle({...style, BorderWidth: e}))
+                        }/>
+                    </span>
+                    <span>
+                        <label>边框颜色</label>
+                        <ColorPicker disabled={active === -1 || type !== 'table'}
+                            value={style?.BorderColor? style?.BorderColor : '000000'}
+                            onChangeComplete={
+                            (e: any) => dispatch(setStyle({...style, BorderColor: '#'+e.toHex()}))
+                        }/>
+                    </span>
                 </div>
                 <div>
                     <Button danger disabled={active===-1} onClick={deleteCur}>删除组件</Button>

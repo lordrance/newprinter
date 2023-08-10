@@ -51,7 +51,11 @@ const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
           <tr >
             {
               data.columns?.map((x: Column, index: number) => (
-                <th key={index} style={{backgroundColor: index === data.activeCol ? '#D2F3EE' : undefined}}>{x.name}</th>
+                <th key={index} style={{
+                  backgroundColor: index === data.activeCol ? '#D2F3EE' : undefined,
+                  borderColor: data.style?.BorderColor ? data.style?.BorderColor :'#000000',
+                  borderWidth: data.style?.BorderWidth ? data.style?.BorderWidth+'px' : undefined
+                }}>{x.name}</th>
               ))
             }
           </tr>
@@ -60,7 +64,11 @@ const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
           <tr>
             {
               data.columns?.map((x: Column, index: number) => (
-                <td key={index} style={{backgroundColor: index === data.activeCol ? '#D2F3EE' : undefined}}>{x.value}</td>
+                <td key={index} style={{
+                  backgroundColor: index === data.activeCol ? '#D2F3EE' : undefined,
+                  borderColor: data.style?.BorderColor ? data.style?.BorderColor :'#000000',
+                  borderWidth: data.style?.BorderWidth ? data.style?.BorderWidth+'px' : undefined
+                }}>{x.value}</td>
               ))
             }
           </tr>

@@ -1,6 +1,7 @@
 import { Page, Template, Widget } from '@/interfaces'
 import cloneDeep from 'lodash/cloneDeep';
 import getLodop from './lib/LodopFuncs'
+import { tableToHtml } from '@/utils';
 
 const strCompanyName = '',
 strLicense = 'EE0887D00FCC7D29375A695F728489A6',
@@ -52,6 +53,16 @@ const additems = (lodop: any, items: Widget[]) => {
                     x.height,
                     x.value
                 ) 
+                break;
+            case 'table':
+                const html = tableToHtml(x.style, x.columns,x.value)
+                lodop.ADD_PRINT_TABLE(
+                    x.top,
+                    x.left,
+                    x.width,
+                    x.height,
+                    html
+                )
                 break;
             default:
                 break;
