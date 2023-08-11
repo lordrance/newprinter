@@ -81,6 +81,15 @@ const tempWidgetSlice = createSlice({
         },
         changeCol(state, {payload}) {
             state.widgets[payload.index].columns = payload.value
+        },
+        setTableName(state, {payload}) {
+            console.log(payload)
+            const w = state.widgets[state.activeIndex];
+            console.log(w.style)
+            if (w.tableName) {
+                console.log("===")
+                w.tableName = payload
+            }
         }
     }
 
@@ -88,5 +97,5 @@ const tempWidgetSlice = createSlice({
 
 export const {changeActive,changeWidgetPos,changeWidgetWH,createWidgets, changeWidgetWHO,
      changeWidgetPosO, addWidget, deleteWidget, setStyle, changeValue, setActiveCol, deleteCurCol,
-      addCol, changeCol} = tempWidgetSlice.actions;
+      addCol, changeCol, setTableName} = tempWidgetSlice.actions;
 export default tempWidgetSlice.reducer;

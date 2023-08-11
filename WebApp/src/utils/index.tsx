@@ -162,6 +162,7 @@ export const getDefaultTable = () => {
         top: 0,
         value: [],
         activeCol: -1,
+        tableName: '',
         columns: [
             {
                 name: 'title1',
@@ -184,6 +185,76 @@ export const getDefaultTable = () => {
     } as Widget
 }
 
-export const tableToHtml = (style: any, cols?: Column[], value?:any) => {
+export const getTestData = () => {
 
+    return (
+`{
+    "a":"haha",
+    "b":123
+}`
+    )
+}
+
+export const replacePattern = (input: string, pattern: string, replacement: string) => {
+  const regex = new RegExp(`{${pattern}}?`, 'g');
+  const replacedString = input.replace(regex, replacement);
+  const hasReplaced = replacedString !== input;
+  return { replaced: hasReplaced, result: replacedString };
+}
+
+export const tableToHtml = (style: any, cols?: Column[], value?:any) => {
+    const textAlign = style?.Alignment === 3 ? 'right' : style?.Alignment === 2 ? 'center' : 'left'
+    const getTh = () => {
+        let th = '';
+        cols?.forEach(x => th += `<th>${x.name}</th>`)
+        return th;
+    }
+    const getTd = () => {
+        let td = '';
+        if (value?.length <= 0) {
+            td += '<tr>'
+            cols?.forEach(x => td += `<td>${x.value}</td>`)
+            td += '</tr>'
+        }
+        return td
+    }
+    let html = 
+    `
+    <style>
+        table th, table td {
+            word-break: break-all;
+            box-sizing: border-box;
+            border-style: solid;
+            text-align: ${textAlign};
+            border-color: ${style.BorderColor ? style.BorderColor : '#000000'};
+            border-width: ${style.BorderWidth ? style.BorderWidth : 2};
+            padding: 8px;
+        }
+        table {
+            border-collapse: collapse;
+            font-size: ${style.FontSize ? style.FontSize+'pt' : '12pt' };
+            color: ${style.FontColor ? style.FontColor : '#000000'};
+            font-family: ${style.FontName ? style.FontName : 'Microsoft Yahei'};
+            font-weight: ${style.FontWeight ? 'bold': 'normal'};
+            text-decoration: ${style.Underline ? 'underline' : 'none'};
+            font-style: ${style.Italic ? 'italic' : 'normal'};
+            width: 100%;
+        }
+        table th {
+            font-weight: 'bold';
+        }
+    </style>
+    <table>
+        <thead>
+            <tr>
+                ${getTh()}
+            </tr>
+        </thead>
+        <tbody>
+            ${getTd()}
+        </todody>
+    </table>
+    `
+    console.log(html)
+    return html;
 }

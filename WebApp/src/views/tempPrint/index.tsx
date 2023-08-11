@@ -1,5 +1,6 @@
+import {useState} from 'react'
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Input, List, MenuProps, Menu } from 'antd'
+import { Button, Input, List, MenuProps, Menu, Modal } from 'antd'
 import Preview from '@/components/preview';
 import styles from './index.module.scss'
 import { createPage } from '@/store/slices/tempPageSlice';
@@ -8,8 +9,11 @@ import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { Template, Page } from '@/interfaces';
 import { v4 as uuid } from 'uuid';
+import { getTestData } from '@/utils';
+import store from '@/store';
+import { preview } from '@/lodop';
 
-const {Search} = Input;
+const {Search, TextArea} = Input;
 const menuItems: MenuProps['items'] = [
   {
     label: '打印',
@@ -27,6 +31,27 @@ const TempPrint = () => {
   const dispatch = useDispatch();
   const str = localStorage.getItem('temps');
   const data: Template[] = str ? JSON.parse(str) : [];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  let testData: string = '';
+
+  const handleOk = (e: any) => {
+    const temp: Template = {
+      page: tempPage,
+      widgets: store.getState().tempWidget.widgets
+    }
+    let data: any = null
+    try {
+      data = JSON.parse(testData)
+    } catch(err) {
+      alert('数据格式错误')
+      return;
+    }
+    console.log(data)
+    preview(temp, data)
+    setIsModalOpen(false);
+  };
+
   const handleChoose = (index: number) => {
     dispatch(createPage(data[index].page));
     dispatch(createWidgets(data[index].widgets));
@@ -79,7 +104,20 @@ const TempPrint = () => {
           </div>
         </div>
         <div className='right'>
-          <div className='temp-name'>{tempPage.name}</div>
+          <div className='temp-name'>
+            {tempPage.name}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button type="primary" onClick={() => setIsModalOpen(true)} 
+              disabled={tempPage.uuid === 'null'}
+            >
+                测试数据预览
+            </Button>
+            <Modal title="测试数据" open={isModalOpen} onOk={handleOk} 
+            onCancel={() => setIsModalOpen(false)}>
+              <TextArea defaultValue={testData = getTestData()} autoSize={true}
+              onBlur={(e: any) => testData=e.target.value}/>
+            </Modal>
+          </div>
           <div className='view-port'>
             <Preview/>
           </div>

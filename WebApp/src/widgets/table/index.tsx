@@ -9,9 +9,11 @@ const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
   const data: Widget = useSelector((s: any) => s.tempWidget.widgets[index])
   const ref = useMouseWidget(index)
   const handleClick = (e: any) => {
+    if (isDesign)
     dispatch(setActiveCol(e.target.cellIndex))
   }
   const updateColValue = (e: any) => {
+    if (!isDesign) return
     const s: string[] = e.target.innerText.split('\n');
     const s1: string[] = s[0].split('\t')
     const s2: string[] = s[1].split('\t')

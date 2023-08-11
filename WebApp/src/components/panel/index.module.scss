@@ -28,40 +28,9 @@
         .page {
             width: 24vw;
             margin: 5px;
-            .main {
-                > div {
-                    margin-bottom: 20px;
-                    > span {
-                        margin-right: 20px;
-                    }
-                }
-                .ant-input {
-                    width: 15vw;
-                    border-radius: 3px;
-                }
-                .ant-input-number {
-                    height: 30px;
-                    width: 5vw;
-                }
-            }
         }
         .style {
             width: 23vw;
-            .main {
-                > div {
-                    margin-bottom: 20px;
-                    > span {
-                        margin-right: 10px;
-                    }
-                    > .ant-btn {
-                        margin-right: 10px;
-                    }
-                }
-                .ant-input-number {
-                    height: 30px;
-                    width: 5vw;
-                }
-            }
         }
         .widget {
             width: 23vw;
