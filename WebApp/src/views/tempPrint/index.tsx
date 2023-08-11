@@ -1,9 +1,9 @@
 import {useState} from 'react'
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Input, List, MenuProps, Menu, Modal } from 'antd'
+import { Button, Input, List, Modal, Select, message, Popconfirm } from 'antd'
 import Preview from '@/components/preview';
 import styles from './index.module.scss'
-import { createPage } from '@/store/slices/tempPageSlice';
+import { changeTempName, changeTempPageWH, changeTempWH, createPage, setType, setUUID } from '@/store/slices/tempPageSlice';
 import { createWidgets } from '@/store/slices/tempWidgetSlice';
 import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom';
@@ -14,16 +14,6 @@ import store from '@/store';
 import { preview } from '@/lodop';
 
 const {Search, TextArea} = Input;
-const menuItems: MenuProps['items'] = [
-  {
-    label: '打印',
-    key: 'print',
-  },
-  {
-    label: '模板',
-    key: 'temp',
-  },
-]
 
 const TempPrint = () => {
   const navigateTo = useNavigate();
@@ -31,11 +21,12 @@ const TempPrint = () => {
   const dispatch = useDispatch();
   const str = localStorage.getItem('temps');
   const data: Template[] = str ? JSON.parse(str) : [];
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [testDataModal, setTestDataModal] = useState(false);
+  const [newTempModal, setNewTempModal] = useState(false);
 
   let testData: string = '';
 
-  const handleOk = (e: any) => {
+  const handleOk = () => {
     const temp: Template = {
       page: tempPage,
       widgets: store.getState().tempWidget.widgets
@@ -49,7 +40,7 @@ const TempPrint = () => {
     }
     console.log(data)
     preview(temp, data)
-    setIsModalOpen(false);
+    setTestDataModal(false);
   };
 
   const handleChoose = (index: number) => {
@@ -57,39 +48,48 @@ const TempPrint = () => {
     dispatch(createWidgets(data[index].widgets));
   }
 
-  const design = () => {
-    if (tempPage.uuid === 'null') {
-      alert('请选择模板')
-    } else {
-      navigateTo('designer')
-    }
+  const handleDelete = () => {
+    let str = localStorage.getItem('temps');
+    const data: Template[] = str ? JSON.parse(str) : [];
+    const index = data.findIndex(x => x.page.uuid === tempPage.uuid)
+    if (index !== -1)
+    data.splice(index, 1);
+    str = JSON.stringify(data);
+    localStorage.setItem('temps', str)
+    clearTemp();
+    message.success('删除成功')
   }
 
   const createTemp = () => {
+    dispatch(changeTempWH({width: 210*3.8, height: 297*3.8}));
+    dispatch(changeTempPageWH({pageWidth: 210, pageHeight: 297}))
+    dispatch(setUUID(uuid()))
+    setNewTempModal(false);
+    navigateTo('designer')
+  }
+
+  const clearTemp = () => {
     const page: Page = {
-      name: 'example',
-      width: 210*3.8,
-      height: 297*3.8,
-      pageHeight: 297,
-      pageWidth: 210,
-      uuid: uuid()
+        name: '',
+        width: 0,
+        height: 0,
+        pageWidth: 0,
+        pageHeight: 0,
+        type: '',
+        uuid: 'null'
     }
     dispatch(createPage(page));
     dispatch(createWidgets([]))
-    navigateTo('designer')
   }
 
   return (
     <div className={styles.root}>
-      <div className='header'>
-        <Menu mode="horizontal" items={menuItems} />
-      </div>
-      <div className='container'>
         <div className='left'>
           <div className='title'>模板列表</div>
           <span className='buttoms'>
             <Search placeholder="input search text"  className='search' />
-            <Button type="primary" icon={<PlusOutlined />} className='create' onClick={createTemp}>新建</Button>
+            <Button type="primary" icon={<PlusOutlined />} className='create' 
+            onClick={() => {clearTemp(); setNewTempModal(true)}}>新建</Button>
           </span>
           <div className='list'>
             <List
@@ -104,29 +104,56 @@ const TempPrint = () => {
           </div>
         </div>
         <div className='right'>
-          <div className='temp-name'>
-            {tempPage.name}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button type="primary" onClick={() => setIsModalOpen(true)} 
-              disabled={tempPage.uuid === 'null'}
-            >
-                测试数据预览
-            </Button>
-            <Modal title="测试数据" open={isModalOpen} onOk={handleOk} 
-            onCancel={() => setIsModalOpen(false)}>
-              <TextArea defaultValue={testData = getTestData()} autoSize={true}
-              onBlur={(e: any) => testData=e.target.value}/>
-            </Modal>
+          <div className='right-top'>
+            <span>
+              {tempPage.uuid !== 'null' ? tempPage.name : ''}
+            </span>
+            <span>
+              <Button onClick={() => setTestDataModal(true)} 
+                disabled={tempPage.uuid === 'null'}
+              >测试数据预览</Button>
+              <Popconfirm
+                title="确定删除？"
+                onConfirm={handleDelete}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button danger
+                  disabled={tempPage.uuid === 'null'}
+                >删除</Button>
+              </Popconfirm>
+              <Button type="primary" onClick={() => navigateTo('designer')} 
+                disabled={tempPage.uuid === 'null'}
+              >设计</Button>
+            </span>
           </div>
           <div className='view-port'>
             <Preview/>
           </div>
-          <span className='buttoms'>
-            <Button danger className='delete-buttom'>删除</Button>
-            <Button type="primary" className='design-buttom' onClick={design}>设计</Button>
-          </span>
         </div>
-      </div>
+        <div>
+          <Modal title="测试数据" open={testDataModal} onOk={handleOk} 
+          onCancel={() => setTestDataModal(false)}>
+            <TextArea defaultValue={testData = getTestData()} autoSize={true}
+            onBlur={(e: any) => testData=e.target.value}/>
+          </Modal>
+          <Modal title="新建模板" open={newTempModal} onOk={createTemp} 
+          onCancel={() => setNewTempModal(false)} width={600}>
+            <label>模板类型</label>
+            <Select
+              style={{ width: 120, margin: '20px 20px 10px 20px'}}
+              onSelect={(e: any) => dispatch(setType(e))}
+              options={[
+                { value: 'PowerConsumption', label: '耗电报表' },
+                { value: 'MaterialProduction', label: '生产报表' },
+              ]}
+            />
+            <label>模板名称</label>
+            <Input style={{width: '200px', margin: '20px 20px 10px 20px'}}
+              onChange={(e: any) => dispatch(changeTempName(e.target.value))}
+            />
+          </Modal>
+        </div>
     </div>
   )
 }

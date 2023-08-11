@@ -83,13 +83,7 @@ const tempWidgetSlice = createSlice({
             state.widgets[payload.index].columns = payload.value
         },
         setTableName(state, {payload}) {
-            console.log(payload)
-            const w = state.widgets[state.activeIndex];
-            console.log(w.style)
-            if (w.tableName) {
-                console.log("===")
-                w.tableName = payload
-            }
+            state.widgets[state.activeIndex].tableName = payload
         }
     }
 

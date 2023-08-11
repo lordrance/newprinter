@@ -22,6 +22,7 @@ const Panel = () => {
             height: 0,
             pageHeight: 0,
             pageWidth: 0,
+            type: '',
             uuid: 'null'
         }))
         dispatch(createWidgets([]))

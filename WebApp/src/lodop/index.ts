@@ -15,6 +15,7 @@ export const preview = (temp: Template, data?: any) => {
     if (data !== null && data !== undefined) {
         dataBind(items, data)
     }
+    console.log(items)
     additems(lodop, items)
     lodop.PREVIEW()
 }
@@ -57,6 +58,10 @@ const dataBind = (items: Widget[], data: any) => {
                         break;
                     }
                 }
+                break;
+            case 'table':
+                if (x.tableName)
+                x.value = data[x.tableName]
                 break;
             default:
                 break;

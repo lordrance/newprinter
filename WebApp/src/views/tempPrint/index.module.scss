@@ -1,105 +1,91 @@
 .root {
     :global {
-        $container-height: 80vh;
-        .container {
-            display: flex;
-            .left {
-                border: 1px solid rgb(223, 223, 223);
-                border-radius: 5px;
-                height: $container-height;
-                width:  30vw;
-                margin: 5px;
-                .title {
-                    width: 77px;
-                    height: 24px;
-                    font-size: 18px;
-                    font-family: Alibaba-PuHuiTi-M, Alibaba-PuHuiTi;
-                    font-weight: normal;
-                    color: #333333;
-                    line-height: 24px;
-                    margin: 10px;
-                }
-                .buttoms {
-                    margin-left: 5px;
-                    margin-bottom: 10px;
-                    .search {
-                        width: 140px;
-                        .ant-input {
-                            border-radius: 0;
-                            height: 30px;
-                        }
-                        .ant-btn {
-                            border-radius: 0;
-                            height: 30px;
-                        }
-                    }
-                    .create {
-                        margin-left: 10px;
-                        width: 80px;
-                        height: 30px;
+        $container-height: 87vh;
+        display: flex;
+        .left {
+            border-right: 1px solid rgb(223, 223, 223);
+            height: $container-height;
+            width:  19vw;
+            margin: 5px;
+            .title {
+                width: 77px;
+                height: 24px;
+                font-size: 18px;
+                font-family: Alibaba-PuHuiTi-M, Alibaba-PuHuiTi;
+                font-weight: normal;
+                color: #333333;
+                line-height: 24px;
+                margin: 10px;
+            }
+            .buttoms {
+                margin-left: 5px;
+                margin-bottom: 10px;
+                .search {
+                    width: 140px;
+                    .ant-input {
                         border-radius: 0;
-                        font-size: 10px;
+                        height: 30px;
+                    }
+                    .ant-btn {
+                        border-radius: 0;
+                        height: 30px;
                     }
                 }
-                .list {
-                    overflow: auto;
-                    height: 85%;
-                    margin-top: 10px;
-                    .ant-list-item {
-                        margin: 0 10px;
-                    }
-                    .ant-list-item:hover {
-                        background-color: #E5F4FF;
-                        cursor: pointer;
-                    }
-                }
-                .list::-webkit-scrollbar {
-                    width: 0;
+                .create {
+                    margin-left: 10px;
+                    width: 80px;
+                    height: 30px;
+                    border-radius: 0;
+                    font-size: 10px;
                 }
             }
-            $bottom-width: 65vw;
-            .right {
-                width: 70vw;
-                height: $container-height;
-                border: 1px solid rgb(223, 223, 223);
-                border-radius: 5px;
-                margin: 5px;
-                .temp-name {
-                    height: 24px;
-                    font-size: 18px;
-                    font-family: Alibaba-PuHuiTi-M, Alibaba-PuHuiTi;
-                    font-weight: normal;
-                    color: #333333;
-                    line-height: 24px;
-                    margin: 10px;
-                    margin-bottom: 15px;
+            .list {
+                overflow: auto;
+                height: 85%;
+                margin-top: 10px;
+                .ant-list-item {
+                    margin: 0 10px;
                 }
-                .view-port {
-                    width: $bottom-width;
-                    height: 65vh;
-                    border: 1px solid rgb(210, 210, 210);
-                    margin: 10px;
-                    background-color: #f2f2f2;
-                    position: relative;
-                    overflow: hidden;
+                .ant-list-item:hover {
+                    background-color: #E5F4FF;
+                    cursor: pointer;
                 }
-                .buttoms {
-                    position: relative;
-                    display: inline-block;
-                    width: $bottom-width;
-                    height: 5vh;
-                    margin-top: 5px;
-                    .delete-buttom {
-                        position: absolute;
-                        right: 150px;
-                        width: 100px;
-                    }
-                    .design-buttom {
-                        position: absolute;
-                        right: 20px;
-                        width: 100px;
-                    }
+            }
+            .list::-webkit-scrollbar {
+                width: 0;
+            }
+        }
+        .right {
+            width: 81vw;
+            height: $container-height;
+            margin: 5px;
+            .right-top {
+                height: 24px;
+                font-size: 18px;
+                font-family: Alibaba-PuHuiTi-M, Alibaba-PuHuiTi;
+                font-weight: normal;
+                color: #333333;
+                line-height: 24px;
+                margin: 10px;
+                margin-bottom: 20px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .ant-btn {
+                    margin-left: 2vw;
+                    width: 110px;
                 }
+            }
+            .view-port {
+                width: 98%;
+                height: 91%;
+                border: 1px solid rgb(210, 210, 210);
+                border-radius: 4px;
+                box-shadow: inset 0px 0px 10px rgb(207, 207, 207);
+                margin: 10px;
+                background-color: #ededed;
+                position: relative;
+                overflow: hidden;
             }
         }
     }

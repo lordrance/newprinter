@@ -190,7 +190,19 @@ export const getTestData = () => {
     return (
 `{
     "a":"haha",
-    "b":123
+    "b":123,
+    "t1": [
+        {
+            "col1": "r1c1",
+            "col2": "r1c2",
+            "col3": "r1c3"
+        },
+        {
+            "col1": "r2c1",
+            "col2": "r2c2",
+            "col3": "r2c3"
+        }
+    ]
 }`
     )
 }
@@ -202,7 +214,7 @@ export const replacePattern = (input: string, pattern: string, replacement: stri
   return { replaced: hasReplaced, result: replacedString };
 }
 
-export const tableToHtml = (style: any, cols?: Column[], value?:any) => {
+export const tableToHtml = (style: any, cols?: Column[], value?:any[]) => {
     const textAlign = style?.Alignment === 3 ? 'right' : style?.Alignment === 2 ? 'center' : 'left'
     const getTh = () => {
         let th = '';
@@ -211,10 +223,16 @@ export const tableToHtml = (style: any, cols?: Column[], value?:any) => {
     }
     const getTd = () => {
         let td = '';
-        if (value?.length <= 0) {
+        if (!value || value && value.length <= 0) {
             td += '<tr>'
             cols?.forEach(x => td += `<td>${x.value}</td>`)
             td += '</tr>'
+        } else {
+            value.forEach(i => {
+                td += '<tr>'
+                cols?.forEach(x => td += `<td>${i[x.value.substring(1, x.value.length - 1)]}</td>`)
+                td += '</tr>'
+            })
         }
         return td
     }

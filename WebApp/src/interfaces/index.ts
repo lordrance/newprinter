@@ -9,6 +9,7 @@ export interface Page {
     height: number;
     pageWidth: number;
     pageHeight: number;
+    type: string;
     uuid: string;
 }
 
@@ -25,15 +26,6 @@ export interface Widget {
     tableName?: string;
     columns?: Column[];
     style: any;
-}
-
-export interface Style {
-    FontSize: number;
-    Bold: boolean;
-    Italic: boolean;
-    Underline: boolean;
-    Alignment: string;
-    FontColor: string;
 }
 
 export interface Column {

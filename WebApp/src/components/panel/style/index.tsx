@@ -1,4 +1,4 @@
-import { Button, InputNumber, ColorPicker, Radio, Switch, Select, Input } from 'antd'
+import { Button, InputNumber, ColorPicker, Radio, Switch, Select, Input, Popconfirm} from 'antd'
 import { changeWidgetWHO, changeWidgetPosO, deleteWidget, changeActive, setStyle,deleteCurCol, addCol, changeValue, setTableName} from '@/store/slices/tempWidgetSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { getFonts, tableToHtml} from '@/utils'
@@ -145,7 +145,16 @@ const PanelStyle = () => {
                 </span>
             </div>
             <div>
-                <Button danger disabled={active===-1} onClick={deleteCur}>删除组件</Button>
+                <Popconfirm
+                    title="确定删除？"
+                    onConfirm={deleteCur}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Button danger
+                    disabled={active===-1}
+                    >删除组件</Button>
+                </Popconfirm>
                 {/* <Button onClick={() => tableToHtml(widget?.style, widget?.columns)}>test</Button> */}
             </div>
         </div>
