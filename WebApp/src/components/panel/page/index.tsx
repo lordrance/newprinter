@@ -1,7 +1,7 @@
 import {  Input, InputNumber, Select } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
-import { changeTempName, changeTempPageWH, changeTempWH} from '@/store/slices/tempPageSlice'
-import {  getPaper } from '@/utils'
+import { changeTempName, changeTempPageWH, changeTempWH, setType} from '@/store/slices/tempPageSlice'
+import {  getPaper, getTempType } from '@/utils'
 import { Page} from '@/interfaces'
 import styles from './index.module.scss'
 
@@ -38,6 +38,15 @@ const PanelPage = () => {
                 <Input placeholder="请输入模板名称" value={page.name} onChange={
                     (e: any) => dispatch(changeTempName(e.target.value))
                     }/>
+            </div>
+            <div>
+                <label>模板类型</label>
+                <Select
+                    style={{width: 130}}
+                    value={page.type}
+                    onSelect={(e: any) => dispatch(setType(e))}
+                    options={getTempType()}
+                />
             </div>
             <div>
                 <label>纸张宽度(mm)</label>

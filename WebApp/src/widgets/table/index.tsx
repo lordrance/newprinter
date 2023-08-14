@@ -44,7 +44,7 @@ const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
       }}
     >
       <table 
-        contentEditable={true}
+        contentEditable={data.isEdit}
         suppressContentEditableWarning={true}
         onClick={handleClick}
         onBlur={updateColValue}
@@ -70,7 +70,7 @@ const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
                   backgroundColor: index === data.activeCol ? '#D2F3EE' : undefined,
                   borderColor: data.style?.BorderColor ? data.style?.BorderColor :'#000000',
                   borderWidth: data.style?.BorderWidth ? data.style?.BorderWidth+'px' : undefined
-                }}>{x.value}</td>
+                }}>{'{'+x.value+'}'}</td>
               ))
             }
           </tr>

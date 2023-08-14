@@ -1,7 +1,7 @@
-import { Button, InputNumber, ColorPicker, Radio, Switch, Select, Input, Popconfirm} from 'antd'
-import { changeWidgetWHO, changeWidgetPosO, deleteWidget, changeActive, setStyle,deleteCurCol, addCol, changeValue, setTableName} from '@/store/slices/tempWidgetSlice'
+import { Button, InputNumber, ColorPicker, Radio, Switch, Select, Popconfirm} from 'antd'
+import { changeWidgetWHO, changeWidgetPosO, deleteWidget, changeActive, setStyle} from '@/store/slices/tempWidgetSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import { getFonts, tableToHtml} from '@/utils'
+import { getFonts} from '@/utils'
 import styles from './index.module.scss'
 import { Widget } from '@/interfaces'
 
@@ -35,7 +35,7 @@ const PanelStyle = () => {
                 <span>
                     <label>横坐标</label>
                     <InputNumber disabled={active===-1} value={active===-1?null:widget?.left.toFixed(1)} onChange={
-                        (e) => dispatch(changeWidgetPosO({left: e, top: top}))
+                        (e) => dispatch(changeWidgetPosO({left: e, top: widget?.top}))
                     }/>
                 </span>
                 <span>
@@ -111,25 +111,16 @@ const PanelStyle = () => {
                 </Radio.Group>
             </div>
             <div>
-                <label>表格名称</label>
-                <Input disabled={active === -1 || widget?.type !== 'table'}
-                    onChange={(e: any) => dispatch(setTableName(e.target.value))}
-                    value={widget?.tableName ? widget?.tableName : undefined}
-                />
-            </div>
-            <div>
-                <label>表格列</label>
-                <Button disabled={active === -1 || widget?.type !== 'table'}
-                    onClick={() => {dispatch(addCol())}}
-                >新增一列</Button>
-                <Button disabled={active === -1 || widget?.type !== 'table' || widget?.activeCol === -1} 
-                    onClick={() => dispatch(deleteCurCol())}
-                >删除当前列</Button>
+                <label>添加边框</label>
+                <Switch disabled={active===-1 || widget?.type === 'table'} onChange={
+                    (e: any) => dispatch(setStyle({...widget?.style, BorderWidth: e?2:0}))
+                } 
+                checked={widget?.style?.BorderWidth ? true : false}/>
             </div>
             <div>
                 <span>
                     <label>边框粗细</label>
-                    <InputNumber min={1} disabled={active === -1 || widget?.type !== 'table'}
+                    <InputNumber min={1} disabled={active === -1 || !widget?.style.BorderWidth}
                         value={widget?.style?.BorderWidth ? widget?.style?.BorderWidth : null}
                         onChange={
                         (e: any) => dispatch(setStyle({...widget?.style, BorderWidth: e}))
@@ -137,7 +128,7 @@ const PanelStyle = () => {
                 </span>
                 <span>
                     <label>边框颜色</label>
-                    <ColorPicker disabled={active === -1 || widget?.type !== 'table'}
+                    <ColorPicker disabled={active === -1 || !widget?.style.BorderWidth}
                         value={widget?.style?.BorderColor? widget?.style?.BorderColor : '000000'}
                         onChangeComplete={
                         (e: any) => dispatch(setStyle({...widget?.style, BorderColor: '#'+e.toHex()}))
@@ -155,7 +146,6 @@ const PanelStyle = () => {
                     disabled={active===-1}
                     >删除组件</Button>
                 </Popconfirm>
-                {/* <Button onClick={() => tableToHtml(widget?.style, widget?.columns)}>test</Button> */}
             </div>
         </div>
     </div>

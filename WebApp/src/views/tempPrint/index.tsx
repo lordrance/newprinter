@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { Template, Page } from '@/interfaces';
 import { v4 as uuid } from 'uuid';
-import { getTestData } from '@/utils';
+import { getTempType, getTestData } from '@/utils';
 import store from '@/store';
 import { preview } from '@/lodop';
 
@@ -35,10 +35,9 @@ const TempPrint = () => {
     try {
       data = JSON.parse(testData)
     } catch(err) {
-      alert('数据格式错误')
+      message.error('数据格式错误')
       return;
     }
-    console.log(data)
     preview(temp, data)
     setTestDataModal(false);
   };
@@ -134,7 +133,7 @@ const TempPrint = () => {
         <div>
           <Modal title="测试数据" open={testDataModal} onOk={handleOk} 
           onCancel={() => setTestDataModal(false)}>
-            <TextArea defaultValue={testData = getTestData()} autoSize={true}
+            <TextArea defaultValue={testData = getTestData(tempPage.type === 'PowerConsumption'?'pw' : 'de')} autoSize={true}
             onBlur={(e: any) => testData=e.target.value}/>
           </Modal>
           <Modal title="新建模板" open={newTempModal} onOk={createTemp} 
@@ -143,10 +142,7 @@ const TempPrint = () => {
             <Select
               style={{ width: 120, margin: '20px 20px 10px 20px'}}
               onSelect={(e: any) => dispatch(setType(e))}
-              options={[
-                { value: 'PowerConsumption', label: '耗电报表' },
-                { value: 'MaterialProduction', label: '生产报表' },
-              ]}
+              options={getTempType()}
             />
             <label>模板名称</label>
             <Input style={{width: '200px', margin: '20px 20px 10px 20px'}}

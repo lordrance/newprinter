@@ -34,10 +34,14 @@
         }
         .widget {
             width: 23vw;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             .main {
                 display: flex;
-                justify-content: space-around;
+                flex-wrap: wrap;
+                justify-content: left;
+                .ant-btn {
+                    margin: 5px;
+                }
             }
         }
         .buttom {

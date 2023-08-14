@@ -7,7 +7,7 @@ import { createPage} from '@/store/slices/tempPageSlice'
 import { useNavigate } from 'react-router-dom'
 import store from '@/store'
 import { preview } from '@/lodop'
-import { getDefaultTable, getDefaultText, tableToHtml } from '@/utils'
+import { getDefaultText, getDto, getTable, getText, tableToHtml } from '@/utils'
 import PanelPage from './page'
 import PanelStyle from './style'
 
@@ -15,6 +15,7 @@ const Panel = () => {
     const navigateTo = useNavigate();
     const dispatch = useDispatch();
     const page: Page = useSelector((s: any) => s.tempPage)
+    const dto = getDto(page.type);
     const cancel = () => {
         dispatch(createPage({
             name: '',
@@ -70,8 +71,15 @@ const Panel = () => {
             <div className='title'>添加组件</div>
             <div className='main'>
                <Button onClick={() => dispatch(addWidget(getDefaultText()))}>文本</Button> 
-               <Button onClick={() => dispatch(addWidget(getDefaultTable()))}>表格</Button> 
-               <Button>图片</Button> 
+               { 
+                 dto?.map((x, index)=> {
+                    if (x.columns) {
+                        return <Button key={index} onClick={() => dispatch(addWidget(getTable(x)))}>{x.name}</Button>
+                    } else {
+                        return <Button key={index} onClick={() => dispatch(addWidget(getText(x)))}>{x.name}</Button>
+                    }
+                 })
+               }
             </div>
         </div>
         <hr/>

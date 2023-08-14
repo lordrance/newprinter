@@ -21,6 +21,7 @@ export interface Widget {
     height: number;
     left: number;
     top: number;
+    name: string;
     value: any;
     activeCol: number;
     tableName?: string;

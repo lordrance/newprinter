@@ -25,10 +25,13 @@ const Text = ({index, isDesign}: {index: number, isDesign: boolean}) => {
         textDecoration: data?.style?.Underline ? 'underline' : 'none',
         textAlign: data?.style?.Alignment === 'right' ? 'right' : data?.style?.Alignment === 'center' ? 'center' : 'left',
         color: data?.style?.FontColor,
-        fontFamily: data?.style?.FontName
+        fontFamily: data?.style?.FontName,
+        borderWidth: data.style?.BorderWidth ? data.style?.BorderWidth : 0,
+        borderStyle: 'solid',
+        borderColor: data.style?.BorderColor ? data.style?.BorderColor :'#000000'
       }}
       suppressContentEditableWarning={true}
-      contentEditable={true}
+      contentEditable={data.isEdit}
       onBlur={updateText}
     >
       {data.value}

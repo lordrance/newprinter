@@ -6,6 +6,36 @@ const initialState = {
     widgets: [] as Widget[]
 }
 
+let posX: number[] = [];
+let posY: number[] = [];
+
+let near :number[][] = [];
+
+const uniqueArray = (arr: number[]) => {
+    let uniqueArray: number[] = [];
+    for (const num of arr) {
+        if (uniqueArray.length === 0 || num !== uniqueArray[uniqueArray.length - 1]) {
+            uniqueArray.push(num);
+        }
+    }
+    return uniqueArray
+}
+
+const findAdjacentIndices = (arr: number[], target: number) => {
+    const targetIndex = arr.indexOf(target);
+
+    if (targetIndex === -1) {
+        return [-1, -1]; 
+    }
+    
+    arr.splice(targetIndex, 1);
+
+    const prevIndex = targetIndex - 1;
+    const nextIndex = targetIndex;
+
+    return [prevIndex >= 0 ? prevIndex : -1, nextIndex < arr.length ? nextIndex : -1];
+}
+
 const tempWidgetSlice = createSlice({
     name: 'tempWidget',
     initialState: initialState,
@@ -13,6 +43,15 @@ const tempWidgetSlice = createSlice({
         createWidgets(state, {payload}: {payload: Widget[]}) {
             state.widgets = payload;
             state.activeIndex = -1;
+            let c = 0;
+            posX = []; posY = []
+            payload.forEach(x=>{
+                posX[c] = x.left; posY[c] = x.top; c++;
+                posX[c] = x.left+x.width; posY[c] = x.top + x.height; c++;
+            })
+            posX.sort(); posY.sort();
+            posX = uniqueArray(posX); posY = uniqueArray(posY);
+            console.log(posX, posY)
         },
         changeActive(state, {payload}) {
             state.activeIndex = payload;
@@ -22,7 +61,17 @@ const tempWidgetSlice = createSlice({
                         x.activeCol = -1
                     }
                 })
+            } else {
+                let t, b, l, r;
+                const w = state.widgets[state.activeIndex]
+                t = w.top; b = w.top + w.height; l = w.left; r = w.left + w.width;
+                near[0] = findAdjacentIndices(posY, t);
+                near[1] = findAdjacentIndices(posY, b);
+                near[2] = findAdjacentIndices(posX, l);
+                near[3] = findAdjacentIndices(posX, r);
             }
+            console.log(near)
+            console.log(posX, posY)
         },
         changeWidgetWHO(state, {payload}) {
             state.widgets[state.activeIndex].width = payload.width;

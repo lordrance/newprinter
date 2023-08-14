@@ -1,7 +1,7 @@
 import { Page, Template, Widget } from '@/interfaces'
 import cloneDeep from 'lodash/cloneDeep';
 import getLodop from './lib/LodopFuncs'
-import { replacePattern, tableToHtml } from '@/utils';
+import { replacePattern, tableToHtml, textTohtml } from '@/utils';
 
 const strCompanyName = '',
 strLicense = 'EE0887D00FCC7D29375A695F728489A6',
@@ -11,11 +11,9 @@ strLicenseB =  '';
 export const preview = (temp: Template, data?: any) => {
     const lodop = createLodop(temp.page);
     const items = cloneDeep(temp.widgets);
-    toLodopStyle(items)
     if (data !== null && data !== undefined) {
         dataBind(items, data)
     }
-    console.log(items)
     additems(lodop, items)
     lodop.PREVIEW()
 }
@@ -28,34 +26,19 @@ const createLodop = (page: Page) => {
     return lodop
 }
 
-const toLodopStyle = (items: Widget[]) => {
-    for (let i = 0; i < items.length; i++) {
-        let lodopStyle: any = {};
-        const style = items[i].style;
-        const keys = ['Bold', 'Italic', 'Underline'];
-        for (const key in style) {
-            if (keys.some(x=>x===key)) {
-                lodopStyle[key] = style[key] ? 1 : 0;
-            } else if (key === 'Alignment') {
-                lodopStyle[key] = style[key] === 'left' ? 1 : style[key] === 'center' ? 2 : 3;
-            } else {
-                lodopStyle[key] = style[key]
-            }
-        }
-        items[i].style = lodopStyle
-    }
-}
-
 const dataBind = (items: Widget[], data: any) => {
     const keys = Object.keys(data);
     items.forEach(x => {
         switch (x.type) {
             case 'text':
-                for (let i = 0; i < keys.length; i++) {
-                    const res = replacePattern(x.value, keys[i], data[keys[i]])
-                    if (res.replaced) {
-                        x.value = res.result;
-                        break;
+                if (x.isEdit) break;
+                else {
+                    for (let i = 0; i < keys.length; i++) {
+                        const res = replacePattern(x.value, keys[i], data[keys[i]])
+                        if (res.replaced) {
+                            x.value = res.result;
+                            break;
+                        }
                     }
                 }
                 break;
@@ -70,23 +53,25 @@ const dataBind = (items: Widget[], data: any) => {
 }
 
 const additems = (lodop: any, items: Widget[]) => {
+    let html
     items.forEach(x => {
         switch (x.type) {
             case 'text':
-                lodop.ADD_PRINT_TEXT(
+                html = textTohtml(x, x.style)
+                lodop.ADD_PRINT_HTM(
                     x.top,
                     x.left,
                     x.width,
                     x.height,
-                    x.value
+                    html
                 ) 
                 break;
             case 'table':
-                const html = tableToHtml(x.style, x.columns, x.value)
-                lodop.ADD_PRINT_TABLE(
+                html = tableToHtml(x.style, x, x.value)
+                lodop.ADD_PRINT_HTM(
                     x.top,
                     x.left,
-                    x.width,
+                    x.width + 4,
                     x.height,
                     html
                 )
@@ -94,8 +79,5 @@ const additems = (lodop: any, items: Widget[]) => {
             default:
                 break;
         }
-        Object.keys(x.style).forEach(s => {
-            lodop.SET_PRINT_STYLEA(0, s, x.style[s])
-        })
     })
 }

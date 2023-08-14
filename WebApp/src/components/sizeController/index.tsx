@@ -11,10 +11,10 @@ const SizeController = () => {
     return (
         widget ? 
         <div className={styles.root} style={{
-            width: widget.width + 1.5,
-            height: widget.height + 1.5,
-            left: widget.left + 0.5,
-            top: widget.top + 0.5
+            width: widget.width + 1,
+            height: widget.height + 1,
+            left: widget.left - 1.3,
+            top: widget.top - 1.2
         }}>
             {/* //上 */}
             <div style={{

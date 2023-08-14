@@ -1,7 +1,9 @@
 .root {
     position: absolute;
+    overflow: hidden;
     table {
         border-collapse: collapse;
+        box-sizing: border-box;
         width: 100%;
         th, td {
             border: 2px solid black;
