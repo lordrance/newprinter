@@ -1,5 +1,5 @@
 import { Button, InputNumber, ColorPicker, Radio, Switch, Select, Popconfirm} from 'antd'
-import { changeWidgetWHO, changeWidgetPosO, deleteWidget, changeActive, setStyle} from '@/store/slices/tempWidgetSlice'
+import { changeWidgetWHO, changeWidgetPosO, deleteWidget, changeActive, setStyle,deleteCurCol} from '@/store/slices/tempWidgetSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { getFonts} from '@/utils'
 import styles from './index.module.scss'
@@ -116,6 +116,12 @@ const PanelStyle = () => {
                     (e: any) => dispatch(setStyle({...widget?.style, BorderWidth: e?2:0}))
                 } 
                 checked={widget?.style?.BorderWidth ? true : false}/>
+            </div>
+            <div>
+                <label>表格列</label>
+                <Button disabled={active === -1 || widget?.type !== 'table' || widget?.activeCol === -1} 
+                    onClick={() => dispatch(deleteCurCol())}
+                >删除当前列</Button>
             </div>
             <div>
                 <span>
