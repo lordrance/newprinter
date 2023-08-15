@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux"
 import {useRef, useEffect} from 'react'
 import { changeWidgetWH, changeWidgetPos } from "@/store/slices/tempWidgetSlice";
 import store from "@/store";
+//改变组件大小
 //order 0 1 2 3 上右下左
 const useMouseSize = (order: number) => {
     const dispatch = useDispatch();

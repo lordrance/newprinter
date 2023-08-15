@@ -1,7 +1,7 @@
 import {useRef, useEffect} from 'react'
 import { changeActive } from '@/store/slices/tempWidgetSlice'
 import { useDispatch } from 'react-redux';
-
+//移动窗口
 const useMouseScreen = () => {
     let scale = 1;
     let moveX = 0;

@@ -476,7 +476,6 @@ export const tableToHtml = (style: any, w: Widget, value?:any[]) => {
             td += '</tr>'
         } else {
             value.forEach(i => {
-                console.log(i)
                 td += '<tr>'
                 w.columns?.forEach(x => td += `<td >${i[x.value]}</td>`)
                 td += '</tr>'
@@ -501,7 +500,7 @@ export const tableToHtml = (style: any, w: Widget, value?:any[]) => {
             font-size: ${style.FontSize ? style.FontSize+'pt' : '12pt' };
             color: ${style.FontColor ? style.FontColor : '#000000'};
             font-family: ${style.FontName ? style.FontName : '微软雅黑'};
-            font-weight: ${style.FontWeight ? 'bold': 'normal'};
+            font-weight: ${style.Bold ? 'bold': 'normal'};
             text-decoration: ${style.Underline ? 'underline' : 'none'};
             font-style: ${style.Italic ? 'italic' : 'normal'};
             border-color: ${style.BorderColor ? style.BorderColor : '#000000'};
@@ -533,8 +532,8 @@ export const textTohtml = (w: Widget, style: any) => {
     <div style="
         font-size: ${style.FontSize ? style.FontSize+'pt' : '12pt'};
         color: ${style.FontColor ? style.FontColor : '#000000'};
-        font-weight: ${style.FontWeight ? 'bold': 'normal'};
         text-decoration: ${style.Underline ? 'underline' : 'none'};
+        font-weight: ${style.Bold ? 'bold': 'normal'};
         font-style: ${style.Italic ? 'italic' : 'normal'};
         word-break: break-all;
         font-family: ${style.FontName ? style.FontName : '微软雅黑'};
@@ -545,6 +544,7 @@ export const textTohtml = (w: Widget, style: any) => {
         border-color: ${style.BorderColor ? style.BorderColor : '#000000'};
         width: ${w.width}px;
         height: ${w.height}px;
+        padding: 4px
     ">
         ${w.value}
     </div>

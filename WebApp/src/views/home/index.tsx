@@ -92,7 +92,6 @@ const Home: React.FC = () => {
   let deleteLabel = ''
   const handleDelete = () => {
     const index = topItems.findIndex(x=>x.label === deleteLabel)
-    console.log(index, deleteLabel)
     if (index !== -1 && topItems[index].key === selectKeys[0]) {
       navigateTo('')
       setSelectKeys([])

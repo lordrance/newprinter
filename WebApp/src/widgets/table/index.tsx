@@ -2,7 +2,7 @@ import { Widget, Column } from '@/interfaces'
 import {useSelector, useDispatch} from 'react-redux'
 import styles from './index.module.scss'
 import useMouseWidget from '@/hooks/useMouseWidget'
-import { changeCol, setActiveCol } from '@/store/slices/tempWidgetSlice'
+import { setActiveCol } from '@/store/slices/tempWidgetSlice'
 
 const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
   const dispatch = useDispatch();
@@ -11,20 +11,6 @@ const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
   const handleClick = (e: any) => {
     if (isDesign)
     dispatch(setActiveCol(e.target.cellIndex))
-  }
-  const updateColValue = (e: any) => {
-    if (!isDesign) return
-    const s: string[] = e.target.innerText.split('\n');
-    const s1: string[] = s[0].split('\t')
-    const s2: string[] = s[1].split('\t')
-    const v: Column[] = []
-    for (let i = 0; i < s1.length; i++) {
-      v[i] = {
-        name: s1[i],
-        value: s2[i]
-      }
-    }
-    dispatch(changeCol({index, value: v}))
   }
 
   return (
@@ -47,7 +33,6 @@ const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
         contentEditable={data.isEdit}
         suppressContentEditableWarning={true}
         onClick={handleClick}
-        onBlur={updateColValue}
       >
         <thead>
           <tr >

@@ -1,5 +1,5 @@
 import { Button, InputNumber, ColorPicker, Radio, Switch, Select, Popconfirm} from 'antd'
-import { changeWidgetWHO, changeWidgetPosO, deleteWidget, changeActive, setStyle,deleteCurCol} from '@/store/slices/tempWidgetSlice'
+import { changeWidgetWHO, changeWidgetPosO, deleteWidget, changeActive, setStyle,deleteCurCol, setMoveWhole} from '@/store/slices/tempWidgetSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { getFonts} from '@/utils'
 import styles from './index.module.scss'
@@ -20,13 +20,13 @@ const PanelStyle = () => {
             <div>
                 <span>
                     <label>宽度</label>
-                    <InputNumber min={10} disabled={active===-1} value={active===-1?null:widget?.width.toFixed(1)} onChange={
+                    <InputNumber min={10} disabled={active===-1} value={active===-1?null:widget?.width} onChange={
                         (e: any) => dispatch(changeWidgetWHO({width: e, height: widget?.height}))
                     }/>
                 </span>
                 <span>
                     <label>高度</label>
-                    <InputNumber min={10} disabled={active===-1} value={active===-1?null:widget?.height.toFixed(1)} onChange={
+                    <InputNumber min={10} disabled={active===-1} value={active===-1?null:widget?.height} onChange={
                         (e: any) => dispatch(changeWidgetWHO({width: widget?.width, height: e}))
                         }/>
                 </span>
@@ -34,13 +34,13 @@ const PanelStyle = () => {
             <div>
                 <span>
                     <label>横坐标</label>
-                    <InputNumber disabled={active===-1} value={active===-1?null:widget?.left.toFixed(1)} onChange={
+                    <InputNumber disabled={active===-1} value={active===-1?null:widget?.left} onChange={
                         (e) => dispatch(changeWidgetPosO({left: e, top: widget?.top}))
                     }/>
                 </span>
                 <span>
                     <label>纵坐标</label>
-                    <InputNumber disabled={active===-1} value={active===-1?null:widget?.top.toFixed(1)} onChange={
+                    <InputNumber disabled={active===-1} value={active===-1?null:widget?.top} onChange={
                         (e: any) => dispatch(changeWidgetPosO({left: widget?.left, top: e}))
                     }/>
                 </span>
@@ -140,6 +140,10 @@ const PanelStyle = () => {
                         (e: any) => dispatch(setStyle({...widget?.style, BorderColor: '#'+e.toHex()}))
                     }/>
                 </span>
+            </div>
+            <div>
+                <label>整体移动</label>
+                <Switch onChange={(e: any) => dispatch(setMoveWhole(e))}/>
             </div>
             <div>
                 <Popconfirm
