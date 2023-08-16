@@ -21,8 +21,11 @@ const TempPrint = () => {
   const dispatch = useDispatch();
   const str = localStorage.getItem('temps');
   const data: Template[] = str ? JSON.parse(str) : [];
+  data.sort((a,b) => a.page.name < b.page.name ? -1 : 1)
   const [testDataModal, setTestDataModal] = useState(false);
   const [newTempModal, setNewTempModal] = useState(false);
+
+  const [showData, setShowData] = useState(data)
 
   //测试数据字符串
   let testData: string = '';
@@ -54,12 +57,14 @@ const TempPrint = () => {
   const handleDelete = () => {
     let str = localStorage.getItem('temps');
     const data: Template[] = str ? JSON.parse(str) : [];
+    data.sort((a,b) => a.page.name < b.page.name ? -1 : 1)
     const index = data.findIndex(x => x.page.uuid === tempPage.uuid)
     if (index !== -1)
     data.splice(index, 1);
     str = JSON.stringify(data);
     localStorage.setItem('temps', str)
     clearTemp();
+    setShowData(data)
     message.success('删除成功')
   }
 
@@ -87,20 +92,29 @@ const TempPrint = () => {
     dispatch(createWidgets([]))
   }
 
+  const handleSearch = (e: any) => {
+    if (e === '' || e === null || e === undefined) {
+      setShowData(data)
+      return
+    }
+    const d = data.filter(x=>x.page.name.includes(e))
+    setShowData(d)
+  }
+
   return (
     <div className={styles.root}>
         <div className='left'>
           {/* 左侧模板列表 */}
           <div className='title'>模板列表</div>
           <span className='buttoms'>
-            <Search placeholder="input search text"  className='search' />
+            <Search placeholder="input search text"  className='search' onSearch={handleSearch} />
             <Button type="primary" icon={<PlusOutlined />} className='create' 
             onClick={() => {clearTemp(); setNewTempModal(true)}}>新建</Button>
           </span>
           <div className='list'>
             <List
               split={false}
-              dataSource={data}
+              dataSource={showData}
               renderItem={(item, index) => (
                 <List.Item onClick={() => handleChoose(index)}>
                     {item.page.name}

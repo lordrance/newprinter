@@ -1,9 +1,11 @@
-import {  Input, InputNumber, Select } from 'antd'
+import {  Input, InputNumber, Select, Modal } from 'antd'
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux'
 import { changeTempName, changeTempPageWH, changeTempWH, setType} from '@/store/slices/tempPageSlice'
 import {  getPaper, getTempType } from '@/utils'
 import { Page} from '@/interfaces'
 import styles from './index.module.scss'
+import { removeAll } from '@/store/slices/tempWidgetSlice';
 
 //模板纸张控制版面
 const PanelPage = () => {
@@ -30,6 +32,22 @@ const PanelPage = () => {
         dispatch(changeTempPageWH({pageWidth: e[0], pageHeight: e[1]}))
         dispatch(changeTempWH({width: e[0]*3.8, height: e[1]*3.8}))
     }
+
+    const chooseTempType = (e: any) => {
+        Modal.confirm({
+            title: '确认改变模板类型？',
+            icon: <ExclamationCircleOutlined/>,
+            content: '这将会清空模板内容',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk: () => {
+                dispatch(removeAll())
+                dispatch(setType(e))
+            }
+        })
+    }
+
   return (
     <div className={styles.root}>
         <div className='title'>模板信息</div>
@@ -45,7 +63,7 @@ const PanelPage = () => {
                 <Select
                     style={{width: 130}}
                     value={page.type}
-                    onSelect={(e: any) => dispatch(setType(e))}
+                    onChange={chooseTempType}
                     options={getTempType()}
                 />
             </div>

@@ -312,6 +312,13 @@ const tempWidgetSlice = createSlice({
                 x.left = x.left + payload.moveX;
                 x.top = x.top + payload.moveY
             })
+        },
+        removeAll(state) {
+            state.activeIndex = -1;
+            state.isMoveWhole = false;
+            state.widgets = [];
+            posX = []; posY = [];
+            near = []
         }
     }
 
@@ -319,5 +326,5 @@ const tempWidgetSlice = createSlice({
 
 export const {changeActive,changeWidgetPos,changeWidgetWH,createWidgets, changeWidgetWHO,
      changeWidgetPosO, addWidget, deleteWidget, setStyle, changeValue, setActiveCol, 
-     deleteCurCol, setMoveWhole, moveAll} = tempWidgetSlice.actions;
+     deleteCurCol, setMoveWhole, moveAll, removeAll} = tempWidgetSlice.actions;
 export default tempWidgetSlice.reducer;
