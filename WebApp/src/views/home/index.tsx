@@ -34,16 +34,19 @@ const items: MenuItem[] = [
   getItem('test2', 'test2', <PieChartOutlined />),
 ];
 
+//主页布局
 const Home: React.FC = () => {
 
   const navigateTo = useNavigate();
   const dispatch = useDispatch();
+  //redux管理顶部导航项
   const topItems: MenuItem[] = useSelector((s: any) => s.topNav)
 
   //收放侧边栏
   const [collapsed, setCollapsed] = useState(false);
   const logoRef = useRef<HTMLImageElement>(null);
   
+  //当收起侧边栏
   const handleCollapse = (value: boolean) => {
     setCollapsed(value)
     if(value && logoRef.current) {
@@ -54,7 +57,7 @@ const Home: React.FC = () => {
     }
   }
 
-  //点击导航
+  //点击左侧导航
   const [selectKeys, setSelectKeys] = useState([] as string[])
   const handleClick = ({key}: {key: string}) => {
     navigateTo(key)
@@ -69,11 +72,13 @@ const Home: React.FC = () => {
     }
   }
 
+  //点击顶部导航
   const handleTopClick = ({key}: {key: string}) => {
     navigateTo(key);
     setSelectKeys([key]);
   }
 
+  //鼠标进入顶部导航项
   const deleteRef = useRef<HTMLDivElement>(null);
   const handleMouseEnter = () => {
     const list = document.querySelectorAll('.right .header .ant-menu-item')
@@ -82,6 +87,7 @@ const Home: React.FC = () => {
     })
   }
 
+  //鼠标离开顶部导航项
   const handleMouseLeave = () => {
     const list = document.querySelectorAll('.right .header .ant-menu-item')
     list.forEach(x=>{
@@ -89,6 +95,7 @@ const Home: React.FC = () => {
     })
   }
 
+  //点击顶部导航删除标签，redux删除顶部导航项
   let deleteLabel = ''
   const handleDelete = () => {
     const index = topItems.findIndex(x=>x.label === deleteLabel)
@@ -100,6 +107,7 @@ const Home: React.FC = () => {
     removeDelete()
   }
 
+  //鼠标进入导航，显示删除标签
   const handleTopEnter = (e: any) => {
     deleteLabel = e.target.outerText;
     let c = deleteRef.current;
@@ -111,12 +119,14 @@ const Home: React.FC = () => {
     }
   }
 
+  //移除删除标签
   const removeDelete = () => {
     if (deleteRef.current) {
       deleteRef.current.style.display='none'
     }
   }
 
+  //顶部导航为空时自动跳转至空页
   useEffect(() => {
     if (topItems.length === 0)
     navigateTo('')
@@ -124,17 +134,20 @@ const Home: React.FC = () => {
 
   return (
     <Layout className={styles.root}>
+      {/* 左侧导航 */}
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => handleCollapse(value)}
         width={192} className='sider'>
         <img src={headLogo} className='head-logo' ref={logoRef}/>
         <Menu theme="dark" mode="inline" items={items} onClick={handleClick} selectedKeys={selectKeys}/>
       </Sider>
       <Layout className='right' >
+        {/* 顶部导航 */}
         <div className='header' onMouseLeave={removeDelete}>
           <Menu mode="horizontal" items={topItems} selectedKeys={selectKeys} onClick={handleTopClick}
           onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}/>
           <div className='delete' ref={deleteRef} onClick={handleDelete}/>
         </div>
+        {/* 内容 */}
         <Content className='content'>
           <Outlet/>
         </Content>

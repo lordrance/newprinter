@@ -8,6 +8,7 @@ strLicense = 'EE0887D00FCC7D29375A695F728489A6',
 strLicenseA = 'C94CEE276DB2187AE6B65D56B3FC2848',
 strLicenseB =  '';
 
+// lodop预览
 export const preview = (temp: Template, data?: any) => {
     const lodop = createLodop(temp.page);
     const items = cloneDeep(temp.widgets);
@@ -18,6 +19,7 @@ export const preview = (temp: Template, data?: any) => {
     lodop.PREVIEW()
 }
 
+// 获取lodop实例
 const createLodop = (page: Page) => {
     const lodop = getLodop();
     lodop.SET_LICENSES(strCompanyName, strLicense, strLicenseA, strLicenseB);
@@ -26,6 +28,7 @@ const createLodop = (page: Page) => {
     return lodop
 }
 
+// 数据绑定
 const dataBind = (items: Widget[], data: any) => {
     const keys = Object.keys(data);
     items.forEach(x => {
@@ -52,6 +55,7 @@ const dataBind = (items: Widget[], data: any) => {
     })
 }
 
+// 添加组件到页面
 const additems = (lodop: any, items: Widget[]) => {
     let html
     items.forEach(x => {

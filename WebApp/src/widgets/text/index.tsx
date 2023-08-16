@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import useMouseWidget from '@/hooks/useMouseWidget'
 import { changeValue } from '@/store/slices/tempWidgetSlice'
 
+//文本组件，包括可编辑文本和不可编辑的数据替换文本
 const Text = ({index, isDesign}: {index: number, isDesign: boolean}) => {
   const dispatch = useDispatch();
   const data: Widget = useSelector((s: any) => s.tempWidget.widgets[index])

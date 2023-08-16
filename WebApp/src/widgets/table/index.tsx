@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 import useMouseWidget from '@/hooks/useMouseWidget'
 import { setActiveCol } from '@/store/slices/tempWidgetSlice'
 
+//表格组件
 const Table = ({index, isDesign}: {index: number, isDesign: boolean}) => {
   const dispatch = useDispatch();
   const data: Widget = useSelector((s: any) => s.tempWidget.widgets[index])

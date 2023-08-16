@@ -15,6 +15,7 @@ const tempPageSlice = createSlice({
     name: 'tempPage',
     initialState: initialState,
     reducers: {
+        // 设置模板页面信息
         createPage(state, {payload}: {payload: Page}) {
             state.height = payload.height;
             state.width = payload.width;

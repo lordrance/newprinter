@@ -1,8 +1,10 @@
+// 模板
 export interface Template {
     page: Page;
     widgets: Widget[];
 }
 
+// 模板长宽id类型
 export interface Page {
     name: string;
     width: number;
@@ -13,6 +15,7 @@ export interface Page {
     uuid: string;
 }
 
+// 组件
 export interface Widget {
     type: string;
     isEdit: boolean;
@@ -29,6 +32,7 @@ export interface Widget {
     style: any;
 }
 
+// 表格列
 export interface Column {
     name: string;
     value: string;

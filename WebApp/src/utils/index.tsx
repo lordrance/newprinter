@@ -1,7 +1,7 @@
 import Text from "@/widgets/text";
 import Table from "@/widgets/table";
 import { Column, Widget } from "@/interfaces";
-
+// 根据组件类型选择不同组件
 export const selectWidget = (type: string, index: number, isDesign: boolean) => {
     switch (type) {
         case 'text':
@@ -13,31 +13,7 @@ export const selectWidget = (type: string, index: number, isDesign: boolean) => 
     }
 }
 
-// export const getFonts = () => {
-//     return [
-//         { value: 'SimSun', label: '宋体' },
-//         { value: 'SimHei', label: '黑体' },
-//         { value: 'Microsoft Yahei', label: '微软雅黑' },
-//         { value: 'Microsoft JhengHei', label: '微软正黑体' },
-//         { value: 'KaiTi', label: '楷体' },
-//         { value: 'NSimSun', label: '新宋体' },
-//         { value: 'FangSong', label: '仿宋' },
-//         { value: 'STKaiti', label: '华文楷体' },
-//         { value: 'STSong', label: '华文宋体' },
-//         { value: 'STFangsong', label: '华文仿宋' },
-//         { value: 'STZhongsong', label: '华文中宋' },
-//         { value: 'STHupo', label: '华文琥珀' },
-//         { value: 'STXinwei', label: '华文新魏' },
-//         { value: 'STLiti', label: '华文隶书' },
-//         { value: 'STXingkai', label: '华文行楷' },
-//         { value: 'YouYuan', label: '幼圆' },
-//         { value: 'LiSu', label: '隶书' },
-//         { value: 'STXihei', label: '华文细黑' },
-//         { value: 'STCaiyun', label: '华文彩云' },
-//         { value: 'FZShuTi', label: '方正舒体' },
-//         { value: 'FZYaoti', label: '方正姚体' },
-//     ];
-// }
+// 获取字体列表
 export const getFonts = () => {
     return [
         { value: '宋体', label: '宋体' },
@@ -64,7 +40,7 @@ export const getFonts = () => {
     ];
 }
 
-
+// 获取纸张列表
 export const getPaper = () => {
     return [
         {
@@ -154,6 +130,8 @@ export const getPaper = () => {
     ]
 
 }
+
+// 返回自定义文本
 export const getDefaultText = () => {
     return {
         type: 'text',
@@ -178,41 +156,7 @@ export const getDefaultText = () => {
     } as Widget
 }
 
-// export const getDefaultTable = () => {
-//     return {
-//         type: 'table',
-//         isEdit: true,
-//         resizable: true,
-//         width: 200,
-//         height: 100,
-//         left: 0,
-//         top: 0,
-//         name: '',
-//         value: [],
-//         activeCol: -1,
-//         tableName: '',
-//         columns: [
-//             {
-//                 name: 'title1',
-//                 value: '{col1}'
-//             },
-//             {
-//                 name: 'title2',
-//                 value: '{col2}'
-//             }
-//         ],
-//         style: {
-//             Bold: false,
-//             Italic: false,
-//             FontSize: 12,
-//             Alignment: 'left',
-//             Underline: false,
-//             FontColor: '#000000',
-//             FontName: 'Microsoft Yahei'
-//         }
-//     } as Widget
-// }
-
+// 返回数据绑定文本
 export const getText = ({name, key}: {name: string, key: string}) => {
     return {
         type: 'text',
@@ -237,6 +181,7 @@ export const getText = ({name, key}: {name: string, key: string}) => {
     } as Widget
 }
 
+// 表格
 export const getTable = ({name, key, columns}: {name: string, key: string, 
     columns:{name: string, key: string}[]}) => {
         const cols: Column[] = columns.map(x=>({name: x.name, value: x.key}))
@@ -266,6 +211,7 @@ export const getTable = ({name, key, columns}: {name: string, key: string,
     } as Widget
 }
 
+// 测试数据
 export const getTestData = (type: string) => {
     switch (type) {
         case 'pw':
@@ -400,10 +346,11 @@ export const getTestData = (type: string) => {
 }`
         )
         default:
-            break;
+            return ''
     }
 }
 
+// 模板类型
 export const getTempType = () => {
     return [
         { value: 'PowerConsumption', label: '耗电报表' },
@@ -411,6 +358,7 @@ export const getTempType = () => {
     ]
 }
 
+// 模板dto
 export const getDto = (type: string) => {
     switch (type) {
         case 'PowerConsumption':
@@ -462,6 +410,8 @@ export const replacePattern = (input: string, pattern: string, replacement: stri
   return { replaced: hasReplaced, result: replacedString };
 }
 
+
+// 将表格组件转为html，发送给lodop
 export const tableToHtml = (style: any, w: Widget, value?:any[]) => {
     const getTh = () => {
         let th = '';
@@ -526,6 +476,7 @@ export const tableToHtml = (style: any, w: Widget, value?:any[]) => {
     return html;
 }
 
+// 文本组件转html
 export const textTohtml = (w: Widget, style: any) => {
     let html =
     `

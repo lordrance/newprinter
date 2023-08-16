@@ -5,6 +5,7 @@ import { getFonts} from '@/utils'
 import styles from './index.module.scss'
 import { Widget } from '@/interfaces'
 
+// 组件样式控制版面
 const PanelStyle = () => {
     const dispatch = useDispatch();
     const active = useSelector((s: any) => s.tempWidget.activeIndex)

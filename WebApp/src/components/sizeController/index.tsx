@@ -1,14 +1,16 @@
 import {useSelector} from 'react-redux'
 import styles from './index.module.scss'
 import useMouseSize from '@/hooks/useMouseSize'
-
+// 组件大小控制器
 const SizeController = () => {
     const widget = useSelector((s: any) => s.tempWidget.widgets[s.tempWidget.activeIndex])
     const ref = []
+    // 为四个小方块添加鼠标移动功能
     for (let i = 0; i < 4; i++) {
         ref[i] = useMouseSize(i);
     }
     return (
+        // 根据当前活跃组件选择是否显示控制器
         widget ? 
         <div className={styles.root} style={{
             width: widget.width + 1,

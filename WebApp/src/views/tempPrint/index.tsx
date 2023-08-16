@@ -14,7 +14,7 @@ import store from '@/store';
 import { preview } from '@/lodop';
 
 const {Search, TextArea} = Input;
-
+//模板打印主界面
 const TempPrint = () => {
   const navigateTo = useNavigate();
   const tempPage = useSelector((s: any) => s.tempPage)
@@ -24,8 +24,10 @@ const TempPrint = () => {
   const [testDataModal, setTestDataModal] = useState(false);
   const [newTempModal, setNewTempModal] = useState(false);
 
+  //测试数据字符串
   let testData: string = '';
 
+  // 测试数据预览确定，将testData字符串转js对象
   const handleOk = () => {
     const temp: Template = {
       page: tempPage,
@@ -42,11 +44,13 @@ const TempPrint = () => {
     setTestDataModal(false);
   };
 
+  // 选择模板，将选择的模板数据发送到redux
   const handleChoose = (index: number) => {
     dispatch(createPage(data[index].page));
     dispatch(createWidgets(data[index].widgets));
   }
 
+  // 删除模板，从localStorage里移除对应项
   const handleDelete = () => {
     let str = localStorage.getItem('temps');
     const data: Template[] = str ? JSON.parse(str) : [];
@@ -59,6 +63,7 @@ const TempPrint = () => {
     message.success('删除成功')
   }
 
+  // 创建模板，并跳转到设计器
   const createTemp = () => {
     dispatch(changeTempWH({width: 210*3.8, height: 297*3.8}));
     dispatch(changeTempPageWH({pageWidth: 210, pageHeight: 297}))
@@ -67,6 +72,7 @@ const TempPrint = () => {
     navigateTo('designer')
   }
 
+  // 清空redux的模板数据
   const clearTemp = () => {
     const page: Page = {
         name: '',
@@ -84,6 +90,7 @@ const TempPrint = () => {
   return (
     <div className={styles.root}>
         <div className='left'>
+          {/* 左侧模板列表 */}
           <div className='title'>模板列表</div>
           <span className='buttoms'>
             <Search placeholder="input search text"  className='search' />
@@ -127,10 +134,12 @@ const TempPrint = () => {
             </span>
           </div>
           <div className='view-port'>
+            {/* 预览窗口 */}
             <Preview/>
           </div>
         </div>
         <div>
+          {/* 对话框 */}
           <Modal title="测试数据" open={testDataModal} onOk={handleOk} 
           onCancel={() => setTestDataModal(false)}>
             <TextArea defaultValue={testData = getTestData(tempPage.type === 'PowerConsumption'?'pw' : 'de')} autoSize={true}

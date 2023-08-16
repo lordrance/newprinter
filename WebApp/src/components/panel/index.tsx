@@ -7,15 +7,18 @@ import { createPage} from '@/store/slices/tempPageSlice'
 import { useNavigate } from 'react-router-dom'
 import store from '@/store'
 import { preview } from '@/lodop'
-import { getDefaultText, getDto, getTable, getText, tableToHtml } from '@/utils'
+import { getDefaultText, getDto, getTable, getText } from '@/utils'
 import PanelPage from './page'
 import PanelStyle from './style'
 
+// 控制版面
 const Panel = () => {
     const navigateTo = useNavigate();
     const dispatch = useDispatch();
     const page: Page = useSelector((s: any) => s.tempPage)
     const dto = getDto(page.type);
+
+    // 取消按钮，清空redux数据，页面跳转
     const cancel = () => {
         dispatch(createPage({
             name: '',
@@ -30,6 +33,7 @@ const Panel = () => {
         navigateTo('/home/tempPrint')
     }
 
+    // 预览模板，调lodop接口
     const previewTemp = () => {
         const temp: Template = {
             page,
@@ -38,6 +42,7 @@ const Panel = () => {
         preview(temp);
     }
 
+    // 保存当前模板，存localStorage
     const save = () => {
         const temp: Template = {
             page,

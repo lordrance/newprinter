@@ -10,6 +10,7 @@ const useMouseScreen = () => {
 
     const ref = useRef<HTMLDivElement>(null);
 
+    // 鼠标滚轮，缩放窗口
     const handleWheel = (e: WheelEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -27,6 +28,7 @@ const useMouseScreen = () => {
         }
     }
 
+    // 鼠标按下，添加鼠标移动和抬起事件
     const handleMouseDown = (e: MouseEvent) => {
         e.preventDefault();e.stopPropagation();
         dispatch(changeActive(-1))
@@ -34,6 +36,7 @@ const useMouseScreen = () => {
         document.addEventListener('mouseup', handleUp);
     }
 
+    // 鼠标移动事件，平移窗口
     const handleMove = (e: MouseEvent) => {
         e.preventDefault();
         const cur = ref.current;
@@ -55,11 +58,13 @@ const useMouseScreen = () => {
         }
     }
 
+    // 移除事件监听器
     const handleUp = () => {
         document.removeEventListener("mousemove", handleMove);
         document.removeEventListener("mouseup", handleUp)
     }
 
+    // 添加滚轮和鼠标按下事件
     useEffect(() => {
         const cur = ref.current;
         cur?.addEventListener('wheel', handleWheel);

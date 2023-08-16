@@ -14,6 +14,7 @@ const useMouseWidget = (index: number) => {
         document.addEventListener('mouseup', handleUp);
     }
 
+    // 修改redux组件当前组件位置
     const handleMove = (e: MouseEvent) => {
         e.stopPropagation(); e.preventDefault();
         const width = store.getState().tempPage.width;

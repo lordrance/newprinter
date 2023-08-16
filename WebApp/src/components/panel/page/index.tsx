@@ -5,6 +5,7 @@ import {  getPaper, getTempType } from '@/utils'
 import { Page} from '@/interfaces'
 import styles from './index.module.scss'
 
+//模板纸张控制版面
 const PanelPage = () => {
     const dispatch = useDispatch();
     const page: Page = useSelector((s: any) => s.tempPage)

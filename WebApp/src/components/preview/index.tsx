@@ -4,6 +4,7 @@ import useMouseScreen from '@/hooks/useMouseScreen'
 import { selectWidget } from '@/utils'
 import { Widget } from '@/interfaces'
 
+// 预览窗口
 const Preview = () => {
     const ref = useMouseScreen();
     const widgets: Widget[] = useSelector((s: any) => s.tempWidget.widgets);
