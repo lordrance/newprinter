@@ -28,7 +28,8 @@ const Text = ({index, isDesign}: {index: number, isDesign: boolean}) => {
         fontFamily: data?.style?.FontName,
         borderWidth: data.style?.BorderWidth ? data.style?.BorderWidth : 0,
         borderStyle: 'solid',
-        borderColor: data.style?.BorderColor ? data.style?.BorderColor :'#000000'
+        borderColor: data.style?.BorderColor ? data.style?.BorderColor :'#000000',
+        lineHeight: data.style.VerticalCenter ? data.height-10+'px' : 'normal'
       }}
       suppressContentEditableWarning={true}
       contentEditable={data.isEdit}

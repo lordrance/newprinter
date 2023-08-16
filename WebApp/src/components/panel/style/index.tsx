@@ -111,11 +111,20 @@ const PanelStyle = () => {
                 </Radio.Group>
             </div>
             <div>
+            </div>
+            <div>
+                <span>
+                    <label>垂直居中</label>
+                    <Switch disabled={active===-1} checked={widget?.style.VerticalCenter ? true : false}
+                    onChange={(e: any) => dispatch(setStyle({...widget?.style, VerticalCenter: e}))}/>
+                </span>
+                <span>
                 <label>添加边框</label>
-                <Switch disabled={active===-1 || widget?.type === 'table'} onChange={
-                    (e: any) => dispatch(setStyle({...widget?.style, BorderWidth: e?2:0}))
-                } 
-                checked={widget?.style?.BorderWidth ? true : false}/>
+                    <Switch disabled={active===-1 || widget?.type === 'table'} onChange={
+                        (e: any) => dispatch(setStyle({...widget?.style, BorderWidth: e?2:0}))
+                    } 
+                    checked={widget?.style?.BorderWidth ? true : false}/>
+                </span>
             </div>
             <div>
                 <label>表格列</label>

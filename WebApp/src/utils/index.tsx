@@ -544,7 +544,8 @@ export const textTohtml = (w: Widget, style: any) => {
         border-color: ${style.BorderColor ? style.BorderColor : '#000000'};
         width: ${w.width}px;
         height: ${w.height}px;
-        padding: 4px
+        padding: 4px;
+        line-height: ${style.VerticalCenter ? w.height/1.7 + 'px' : 'normal' }
     ">
         ${w.value}
     </div>
