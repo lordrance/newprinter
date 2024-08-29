@@ -1,6 +1,8 @@
 import Text from "@/widgets/text";
 import Table from "@/widgets/table";
 import { Column, Widget } from "@/interfaces";
+
+//这些函数的主要作用是 生成和处理动态内容，通常用于 报表系统 或 文档生成系统。它们帮助开发者根据用户输入的数据和配置生成不同的 文本 和 表格 组件，并把这些组件转换成 HTML 格式，方便展示或打印。
 // 根据组件类型选择不同组件
 export const selectWidget = (type: string, index: number, isDesign: boolean) => {
     switch (type) {
@@ -131,7 +133,8 @@ export const getPaper = () => {
 
 }
 
-// 返回自定义文本
+//作用：函数返回一个具有默认值的文本组件对象。这些默认值包括组件的尺寸、位置、字体样式等。
+//该函数为创建一个新的文本组件提供了一个起始模板，返回的对象符合 Widget 类型，主要用于在设计模式下生成一个可编辑的文本组件。
 export const getDefaultText = () => {
     return {
         type: 'text',
@@ -156,7 +159,7 @@ export const getDefaultText = () => {
     } as Widget
 }
 
-// 返回数据绑定文本
+// 返回数据绑定文本，getText 函数根据传入的 name 和 key 生成一个绑定数据的文本组件对象。
 export const getText = ({name, key}: {name: string, key: string}) => {
     return {
         type: 'text',
@@ -182,9 +185,15 @@ export const getText = ({name, key}: {name: string, key: string}) => {
 }
 
 // 表格
+// getTable 函数的作用是创建一个包含表格信息的对象，用于描述一个表格组件。
+//输入参数：
+//name: 表格的名称。
+//key: 数据源的键，用于标识这个表格绑定的数据。
+//columns: 一个数组，包含了表格的列定义，每列包括 name（列的显示名称）和 key（列对应的数据字段）。
 export const getTable = ({name, key, columns}: {name: string, key: string, 
     columns:{name: string, key: string}[]}) => {
         const cols: Column[] = columns.map(x=>({name: x.name, value: x.key}))
+        //columns.map(...)：将输入的列数组 columns 转换为包含 name 和 value 的新数组 cols，每个 value 对应 columns 中的 key。
     return {
         type: 'table',
         isEdit: false,
@@ -211,7 +220,7 @@ export const getTable = ({name, key, columns}: {name: string, key: string,
     } as Widget
 }
 
-// 测试数据
+// 测试数据，根据传入的 type 不同，函数会返回对应的 JSON 格式字符串，例如 pw 类型返回的是电力相关的数据，de 类型返回的是配方生产数据。这些数据通常用于模拟实际数据在前端展示效果。
 export const getTestData = (type: string) => {
     switch (type) {
         case 'pw':
@@ -351,6 +360,7 @@ export const getTestData = (type: string) => {
 }
 
 // 模板类型
+// 函数返回一组模板类型，每种模板类型都有 value 和 label，value 是内部使用的标识，label 是显示给用户看的名字。
 export const getTempType = () => {
     return [
         { value: 'PowerConsumption', label: '耗电报表' },
@@ -359,6 +369,11 @@ export const getTempType = () => {
 }
 
 // 模板dto
+//作用是根据传入的 type 返回对应的数据结构描述。
+//例如，如果 type 是 'PowerConsumption'，返回的 DTO 包含一个 PowerTable，里面有设备、日期等列的定义。
+//如果 type 是 'MaterialProduction'，返回的 DTO 包含 Receipe（配方名称）、DateTime（时间）等信息。
+//Dto 一般表示数据传输对象（Data Transfer Object），在这个函数中，它返回的是一个模板类型所需要的数据结构。
+
 export const getDto = (type: string) => {
     switch (type) {
         case 'PowerConsumption':
@@ -402,6 +417,10 @@ export const getDto = (type: string) => {
             break;
     }
 }
+//replacePattern 在一个字符串中找到特定的“标记”并把它替换成你想要的内容。
+//const templateString = "设备: {Device}, 日期: {DateTime}"; 使用let result = replacePattern(templateString, "Device", "设备A");和result = replacePattern(result.result, "DateTime", "2023-08-14");
+//最后替换成"设备: 设备A, 日期: 2023-08-14"
+
 
 export const replacePattern = (input: string, pattern: string, replacement: string) => {
   const regex = new RegExp(`{${pattern}}?`, 'g');
@@ -412,6 +431,7 @@ export const replacePattern = (input: string, pattern: string, replacement: stri
 
 
 // 将表格组件转为html，发送给lodop
+//函数通过 getTh 和 getTd 两个辅助函数分别生成表头和表格行的 HTML 代码。
 export const tableToHtml = (style: any, w: Widget, value?:any[]) => {
     const getTh = () => {
         let th = '';
@@ -433,7 +453,7 @@ export const tableToHtml = (style: any, w: Widget, value?:any[]) => {
         }
         return td
     }
-    let html = 
+    const html = 
     `
     <style>
         table th, table td {
@@ -478,7 +498,7 @@ export const tableToHtml = (style: any, w: Widget, value?:any[]) => {
 
 // 文本组件转html
 export const textTohtml = (w: Widget, style: any) => {
-    let html =
+    const html =
     `
     <div style="
         font-size: ${style.FontSize ? style.FontSize+'pt' : '12pt'};

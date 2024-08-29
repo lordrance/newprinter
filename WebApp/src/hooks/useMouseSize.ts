@@ -21,7 +21,7 @@ const useMouseSize = (order: number) => {
         e.preventDefault();e.stopPropagation();
         const width = store.getState().tempPage.width;
         const height = store.getState().tempPage.height;
-        let trans = ref.current?.parentElement?.parentElement?.style.transform;
+        const trans = ref.current?.parentElement?.parentElement?.style.transform;
         const s = trans?.match(/scale\((.*?)\)/)
         // 获得窗口缩放比，调整鼠标移动距离
         const scale = s ? parseFloat(s[1]) : 1

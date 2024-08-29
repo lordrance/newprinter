@@ -107,7 +107,7 @@ const changeNear = ( t: number, b: number, l: number, r: number) => {
 const approaching = (w: Widget, moveX: number, moveY: number) => {
     const bw = w.style?.BorderWidth ? w.style?.BorderWidth : 0
     let mx = w.left+moveX, my = w.top+moveY;
-    let offset = 20;
+    const offset = 20;
     const x = Math.abs(moveX), y = Math.abs(moveY), limit = 4
     //下
     if (moveY > 0 && y < limit) {

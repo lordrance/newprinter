@@ -1,6 +1,6 @@
 //数组去重
 export const uniqueArray = (arr: number[]) => {
-    let uniqueArray: number[] = [];
+    const uniqueArray: number[] = [];
     for (const num of arr) {
         if (uniqueArray.length === 0 || num !== uniqueArray[uniqueArray.length - 1]) {
             uniqueArray.push(num);

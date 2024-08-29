@@ -15,7 +15,7 @@ const Designer = () => {
         <div className='left'>
           {/* 控制版面 */}
           <Panel/>
-        </div>
+        </div>    
         <div className='right' onMouseDown={cancelActive}>
           {/* 工作区 */}
           <Design/>

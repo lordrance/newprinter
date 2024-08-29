@@ -11,8 +11,9 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { MenuItem } from '@/interfaces';
 import {useSelector, useDispatch} from 'react-redux'
 import { addNav, deleteNav } from '@/store/slices/topNavSlice';
-
+//Layout: 这是一个布局容器，分为左侧导航栏 (Sider) 和右侧的内容区（Content）。
 const { Content, Sider } = Layout;
+//一个帮助函数，用来简化菜单项的创建。每个菜单项可以有一个标签、一个唯一键（key）、一个图标（可选）以及子菜单（可选）。
 
 function getItem(
   label: React.ReactNode,
@@ -27,7 +28,7 @@ function getItem(
     label,
   } as MenuItem;
 }
-
+//items: 定义了左侧导航栏的菜单项，例如 “模板打印”、“test”、“test2”。
 const items: MenuItem[] = [
   getItem('模板打印', 'tempPrint', <PrinterOutlined/>),
   getItem('test', 'test', <PieChartOutlined />),
@@ -63,8 +64,8 @@ const Home: React.FC = () => {
     navigateTo(key)
     setSelectKeys([key])
     if (!topItems.some(x=>x?.key === key)) {
-        let label = items.find(k=>k?.key === key)?.label
-        let item = {
+        const label = items.find(k=>k?.key === key)?.label
+        const item = {
           key: key,
           label: label
         } as MenuItem;
@@ -110,7 +111,7 @@ const Home: React.FC = () => {
   //鼠标进入导航，显示删除标签
   const handleTopEnter = (e: any) => {
     deleteLabel = e.target.outerText;
-    let c = deleteRef.current;
+    const c = deleteRef.current;
     let offset = e.target.offsetLeft+e.target.offsetWidth
     offset -= e.target.offsetWidth*0.15
     if (c) {

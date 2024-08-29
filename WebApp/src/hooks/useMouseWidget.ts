@@ -1,3 +1,11 @@
+/*
+ * @Author: uyrance uyrance@hotmal.com
+ * @Date: 2024-08-07 18:18:03
+ * @LastEditors: uyrance uyrance@hotmal.com
+ * @LastEditTime: 2024-08-11 18:26:44
+ * @FilePath: \WebApp\src\hooks\useMouseWidget.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import {useEffect, useRef} from 'react'
 import {useDispatch} from 'react-redux'
 import { changeWidgetPos, changeActive, moveAll } from '@/store/slices/tempWidgetSlice';
@@ -20,7 +28,7 @@ const useMouseWidget = (index: number) => {
         const width = store.getState().tempPage.width;
         const height = store.getState().tempPage.height;
         const isMoveWhole = store.getState().tempWidget.isMoveWhole;
-        let trans = ref.current?.parentElement?.style.transform;
+        const trans = ref.current?.parentElement?.style.transform;
         const s = trans?.match(/scale\((.*?)\)/)
         const scale = s ? parseFloat(s[1]) : 1
         if (isMoveWhole) dispatch(moveAll({moveX: e.movementX/scale, moveY: e.movementY/scale}))
